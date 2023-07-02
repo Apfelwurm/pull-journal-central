@@ -1,5 +1,5 @@
 # pull up dev environment from scratch
-dev: env-file-dev composer-install npm-install-dev use-dev-file cache-clear permissions key-generate sail-up-deattached db-regenerate
+dev: env-file-dev composer-install npm-install-dev use-dev-file cache-clear permissions key-generate sail-up-deattached npm-run-dev-deattached db-regenerate
 
 #pull up prd environment from scratch (please use make env-file-prd and edit your .env file, then run this!)
 prd-locl: composer-install npm-install use-prd-locl-file key-generate prd-up-locl
@@ -58,7 +58,7 @@ use-dev-file:
 	[ -f docker-compose.yml ] && rm -rf docker-compose.yml ; true
 	docker run --rm --name devfile --interactive \
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/app \
-    --user $(shell id -u):$(shell id -g) php:8-fpm-alpine /bin/sh -c "cd /app && php artisan sail:install --with mysql,redis,meilisearch,mailhog,selenium"
+    --user $(shell id -u):$(shell id -g) php:8-fpm-alpine /bin/sh -c "cd /app && php artisan sail:install --with mysql,redis,meilisearch,selenium"
 
 # link prd no Proxy Compose file
 use-prd-file:
@@ -151,14 +151,30 @@ npm-install:
 	docker run --rm --name js-maintainence --interactive \
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
 	-w /usr/src/app \
-	node:latest /bin/bash -ci "npm install --no-audit && npm run production"
+	node:latest /bin/bash -ci "npm install --no-audit"
+
+#&& npm run production
 
 # Install Dev JS Dependencies via NPM
 npm-install-dev:
 	docker run --rm --name js-maintainence-dev --interactive \
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
 	-w /usr/src/app \
-	node:latest /bin/bash -ci "npm install --no-audit && npm run dev"
+	node:latest /bin/bash -ci "npm install --no-audit"
+
+npm-run-dev:
+	docker run --rm --name js-maintainence-dev --interactive \
+	--network host \
+	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
+	-w /usr/src/app \
+	node:latest /bin/bash -ci "npm run dev"	
+
+npm-run-dev-deattached:
+	docker run --rm -d --name js-maintainence-dev --interactive \
+	--network host \
+	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
+	-w /usr/src/app \
+	node:latest /bin/bash -ci "npm run dev"	
 
 # List outdated npm dependencies
 npm-outdated:
