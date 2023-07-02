@@ -1,3 +1,14 @@
+# detect compose version
+ifeq ($(OS),Windows_NT)
+  DOCKER_COMPOSE=docker compose
+else
+ifneq ($(shell docker compose version 2>/dev/null),)
+  DOCKER_COMPOSE=docker compose
+else
+  DOCKER_COMPOSE=docker-compose
+endif
+endif
+
 # pull up dev environment from scratch
 dev: env-file-dev composer-install npm-install-dev use-dev-file cache-clear permissions key-generate sail-up-deattached npm-run-dev-deattached db-regenerate
 
@@ -141,10 +152,10 @@ test-coverage-docker:
     --user $(shell id -u):$(shell id -g) jitesoft/phpunit:latest /bin/sh -c "cd /app && mkdir -p db && touch db/database.sqlite && php artisan test --coverage; rm -rf db"
 
 prd-up-locl:
-	docker-compose up -d --build
+	$(DOCKER_COMPOSE) up -d --build
 
 prd-up:
-	docker-compose up -d
+	$(DOCKER_COMPOSE) up -d
 
 # Install JS Dependencies via NPM
 npm-install:
@@ -206,14 +217,21 @@ db-regenerate:
 
 # execute mysql command usage make database-command command=sqlcommandhere
 db-command:
-	echo "use pull-journal-central; $(command)" | docker-compose exec -T mysql mysql -u pull-journal-centraluser -p'password'
+	echo "use pull-journal-central; $(command)" | $(DOCKER_COMPOSE) exec -T mysql mysql -u pull-journal-centraluser -p'password'
 
+# Purge Containers
+purge-containers:
+	$(DOCKER_COMPOSE) down || true
+	$(DOCKER_COMPOSE) rm || true
+	docker volume rm pull-journal-central_sail-meilisearch || true
+	docker volume rm pull-journal-central_sail-mysql || true
+	docker volume rm pull-journal-central_sail-redis || true
 
 show-laravellog-prd:
-	docker-compose exec -T pull-journal-central /bin/sh -c "cat storage/logs/laravel.log"
+	$(DOCKER_COMPOSE) exec -T pull-journal-central /bin/sh -c "cat storage/logs/laravel.log"
 
 follow-laravellog-prd:
-	docker-compose exec -T pull-journal-central /bin/sh -c "tail -f storage/logs/laravel.log"
+	$(DOCKER_COMPOSE) exec -T pull-journal-central /bin/sh -c "tail -f storage/logs/laravel.log"
 
 #generate  key:
 key-generate:
