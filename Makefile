@@ -10,7 +10,7 @@ endif
 endif
 
 # pull up dev environment from scratch
-dev: env-file-dev composer-install npm-install-dev use-dev-file cache-clear permissions key-generate sail-up-deattached npm-run-dev-deattached db-regenerate
+dev: env-file-dev composer-install npm-install-dev use-dev-file cache-clear permissions key-generate sail-up-deattached npm-run-dev-deattached wait-mysql db-regenerate
 
 #pull up prd environment from scratch (please use make env-file-prd and edit your .env file, then run this!)
 prd-locl: composer-install npm-install use-prd-locl-file key-generate prd-up-locl
@@ -31,7 +31,7 @@ composer-command:
 	docker run --rm --name compose-maintainence --interactive \
     --volume $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/app \
     --user $(shell id -u):$(shell id -g) \
-    composer $(command) 
+    composer $(command)
 
 # Install PHP Dependencies via Composer
 composer-install:
@@ -50,7 +50,7 @@ composer-require:
 composer-remove:
 	docker run --rm --name compose-maintainence --interactive \
     --volume $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/app \
-    --user $(shell id -u):$(shell id -g) composer remove $(module) 
+    --user $(shell id -u):$(shell id -g) composer remove $(module)
 
 # check for outdated PHP Dependencies via Composer
 composer-outdated:
@@ -164,7 +164,22 @@ npm-install:
 	-w /usr/src/app \
 	node:latest /bin/bash -ci "npm install --no-audit"
 
-#&& npm run production
+npm-run-prd:
+	docker run --rm --name js-run-prd --interactive \
+	--network host \
+	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
+	-w /usr/src/app \
+	node:latest /bin/bash -ci "npm run production"
+
+npm-stop-prd:
+	docker stop js-run-prd || true
+
+npm-run-prd-deattached:
+	docker run --rm -d --name js-run-prd --interactive \
+	--network host \
+	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
+	-w /usr/src/app \
+	node:latest /bin/bash -ci "npm run production"
 
 # Install Dev JS Dependencies via NPM
 npm-install-dev:
@@ -174,18 +189,21 @@ npm-install-dev:
 	node:latest /bin/bash -ci "npm install --no-audit"
 
 npm-run-dev:
-	docker run --rm --name js-maintainence-dev --interactive \
+	docker run --rm --name js-run-dev --interactive \
 	--network host \
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
 	-w /usr/src/app \
-	node:latest /bin/bash -ci "npm run dev"	
+	node:latest /bin/bash -ci "npm run dev"
+
+npm-stop-dev:
+	docker stop js-run-dev || true
 
 npm-run-dev-deattached:
-	docker run --rm -d --name js-maintainence-dev --interactive \
+	docker run --rm -d --name js-run-dev --interactive \
 	--network host \
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
 	-w /usr/src/app \
-	node:latest /bin/bash -ci "npm run dev"	
+	node:latest /bin/bash -ci "npm run dev"
 
 # List outdated npm dependencies
 npm-outdated:
@@ -193,7 +211,7 @@ npm-outdated:
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
 	-w /usr/src/app \
 	node:latest /bin/bash -ci "npm outdated"
-	
+
 # update outdated npm dependencies usage either  "make npm-update module=modulename" or "make npm-update"
 npm-update:
 	docker run --rm --name js-maintainence-dev --interactive \
@@ -212,7 +230,7 @@ npm-update-save:
 db-regenerate:
 	./vendor/laravel/sail/bin/sail artisan migrate:reset \
     && ./vendor/laravel/sail/bin/sail artisan migrate \
-    && ./vendor/laravel/sail/bin/sail artisan db:seed 
+    && ./vendor/laravel/sail/bin/sail artisan db:seed
 
 
 # execute mysql command usage make database-command command=sqlcommandhere
@@ -220,12 +238,48 @@ db-command:
 	echo "use pull-journal-central; $(command)" | $(DOCKER_COMPOSE) exec -T mysql mysql -u pull-journal-centraluser -p'password'
 
 # Purge Containers
-purge-containers:
+purge-containers: npm-stop-dev npm-stop-prd
 	$(DOCKER_COMPOSE) down || true
 	$(DOCKER_COMPOSE) rm || true
 	docker volume rm pull-journal-central_sail-meilisearch || true
 	docker volume rm pull-journal-central_sail-mysql || true
 	docker volume rm pull-journal-central_sail-redis || true
+
+# Purge Caches
+purge-cache:
+	docker run --rm --name purgecache --interactive \
+	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/src \
+    $(user) php:8-fpm-alpine /bin/sh -c " \
+	rm -rf /src/storage/framework/cache/* && \
+	rm -rf /src/storage/framework/views/* && \
+	rm -rf /src/storage/framework/sessions/* && \
+	rm -rf /src/bootstrap/cache/* && \
+	rm -rf /src/storage/debugbar/* "
+
+# Purge Files
+purge-files:
+	docker run --rm --name purgefiles --interactive \
+	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/src \
+    $(user) php:8-fpm-alpine /bin/sh -c " \
+	rm -rf /src/vendor/ ; \
+	rm -rf /src/node_modules/ ; \
+	rm -rf /src/public/css/* ; \
+	rm -rf /src/storage/logs/* ; \
+	rm -rf /src/public/storage || true"
+
+
+###############
+# DANGER ZONE #
+###############
+# Clean ALL! DANGEROUS!
+purge-all:
+	echo 'This is dangerous!'
+	echo 'This will totally remove all data and information stored in your app!'
+	@echo -n "Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
+	make purge-all-force
+
+purge-all-force: purge-containers purge-cache purge-files
+
 
 show-laravellog-prd:
 	$(DOCKER_COMPOSE) exec -T pull-journal-central /bin/sh -c "cat storage/logs/laravel.log"
@@ -238,6 +292,27 @@ key-generate:
 	docker run --rm --name compkeygen --interactive \
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/app \
     --user $(shell id -u):$(shell id -g) php:8-fpm-alpine /bin/sh -c "cd /app && php artisan key:generate"
+
+get-wait:
+ifneq ("$(wildcard $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/docker/resources/wait)","")
+	echo "wait exists"
+else
+	docker run --rm --name mysqlwaiter --interactive --network="pull-journal-central_sail" \
+	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
+	$(user) php:8-fpm-alpine /bin/sh -c " \
+	wget -O /usr/src/app/docker/resources/wait https://github.com/ufoscout/docker-compose-wait/releases/latest/download/wait && \
+	chmod +x /usr/src/app/docker/resources/wait"
+endif
+
+# Wait for mysql to initialize
+wait-mysql: get-wait
+	docker run --rm --name mysqlwaiter --interactive --network="pull-journal-central_sail" \
+	-e WAIT_HOSTS="pull-journal-central-mysql-1:3306" \
+	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
+	$(user) php:8-fpm-alpine /bin/sh -c " \
+	/usr/src/app/docker/resources/wait &&\
+	sleep 45"
+
 
 # Build docs container
 docs-build:

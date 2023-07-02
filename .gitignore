@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 docker-compose.override.yml
 docker-compose.yml
+docker/resources/wait
+storage/framework/cache/data/*
