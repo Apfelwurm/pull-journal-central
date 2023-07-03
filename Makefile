@@ -132,6 +132,10 @@ sail-logs-follow:
 sail-command:
 	$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/vendor/laravel/sail/bin/sail $(command)
 
+#sail migrate
+sail-migrate:
+	$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/vendor/laravel/sail/bin/sail artisan migrate
+
 #sail artisan test
 test:
 	$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))/vendor/laravel/sail/bin/sail artisan test
