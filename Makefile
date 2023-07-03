@@ -10,7 +10,7 @@ endif
 endif
 
 # pull up dev environment from scratch
-dev: env-file-dev composer-install npm-install-dev use-dev-file cache-clear permissions key-generate sail-up-deattached npm-run-dev-deattached wait-mysql db-regenerate
+dev: env-file-dev composer-install npm-install use-dev-file cache-clear permissions key-generate sail-up-deattached npm-run-dev-deattached wait-mysql db-regenerate
 
 #pull up prd environment from scratch (please use make env-file-prd and edit your .env file, then run this!)
 prd-locl: composer-install npm-install use-prd-locl-file key-generate prd-up-locl
@@ -161,12 +161,12 @@ prd-up-locl:
 prd-up:
 	$(DOCKER_COMPOSE) up -d
 
-# Install JS Dependencies via NPM
+# Install JS Dependencies via NPM "make npm-install module=modulename" or  "make npm-install"
 npm-install:
 	docker run --rm --name js-maintainence --interactive \
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
 	-w /usr/src/app \
-	node:latest /bin/bash -ci "npm install --no-audit"
+	node:latest /bin/bash -ci "npm install $(module) --no-audit"
 
 npm-run-prd:
 	docker run --rm --name js-run-prd --interactive \
@@ -184,13 +184,6 @@ npm-run-prd-deattached:
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
 	-w /usr/src/app \
 	node:latest /bin/bash -ci "npm run production"
-
-# Install Dev JS Dependencies via NPM
-npm-install-dev:
-	docker run --rm --name js-maintainence-dev --interactive \
-	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
-	-w /usr/src/app \
-	node:latest /bin/bash -ci "npm install --no-audit"
 
 npm-run-dev:
 	docker run --rm --name js-run-dev --interactive \
