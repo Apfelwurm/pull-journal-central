@@ -8,6 +8,8 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+
+
 </script>
 
 <template>
@@ -31,6 +33,15 @@ const showingNavigationDropdown = ref(false);
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink>
+                                <NavLink v-if="$page.props.auth.user.isAllowedToView" :href="route('devices.show')" :active="route().current('devices.show')">
+                                    Devices
+                                </NavLink>
+                                <NavLink v-if="$page.props.auth.user.isAdmin" :href="route('admin.usermanagement.show')" :active="route().current('admin.usermanagement.show')">
+                                    Usermanagement
+                                </NavLink>
+                                <NavLink v-if="$page.props.auth.user.isAdmin" :href="route('admin.devicemanagement.show')" :active="route().current('admin.devicemanagement.show')">
+                                    Devicemanagement
                                 </NavLink>
                             </div>
                         </div>
