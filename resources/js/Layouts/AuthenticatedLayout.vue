@@ -34,15 +34,18 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink v-if="$page.props.auth.user.isAllowedToView" :href="route('devices.show')" :active="route().current('devices.show')">
+                                <!-- <NavLink v-if="$page.props.auth.user.isAllowedToView" :href="route('devices.show')" :active="route().current('devices.show')">
                                     Devices
+                                </NavLink> -->
+                                <NavLink v-if="$page.props.auth.isAdmin" :href="route('users.index')" :active="route().current('users.index')">
+                                    Users
                                 </NavLink>
-                                <NavLink v-if="$page.props.auth.user.isAdmin" :href="route('admin.usermanagement.show')" :active="route().current('admin.usermanagement.show')">
-                                    Usermanagement
+                                <NavLink v-if="$page.props.auth.isAdmin" :href="route('roles.index')" :active="route().current('roles.index')">
+                                    Roles
                                 </NavLink>
-                                <NavLink v-if="$page.props.auth.user.isAdmin" :href="route('admin.devicemanagement.show')" :active="route().current('admin.devicemanagement.show')">
+                                <!-- <NavLink v-if="$page.props.auth.user.isAdmin" :href="route('admin.devicemanagement.show')" :active="route().current('admin.devicemanagement.show')">
                                     Devicemanagement
-                                </NavLink>
+                                </NavLink> -->
                             </div>
                         </div>
 

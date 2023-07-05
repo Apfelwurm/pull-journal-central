@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 
-class AllowedToView
+class Viewer
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class AllowedToView
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->isAllowedToView) {
+        if (Auth::check() && Auth::user()->isViewer()) {
             return $next($request);
         }
 

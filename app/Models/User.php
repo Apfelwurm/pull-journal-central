@@ -20,8 +20,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'isAdmin',
-        'isAllowedToView',
     ];
 
     /**
@@ -43,4 +41,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getFormattedCreatedAtAttribute(): string
+    {
+        return $this->created_at->format('d M Y');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role->id == 1;
+    }
+
+    public function isViewer(): bool
+    {
+        return $this->role->id == 2;
+    }
+
 }

@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use App\Http\Middleware\Admin;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -35,16 +36,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/users/{User}', [UserController::class, 'show'])->name('users.show');
+
+
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/usermanagement', [UsersController::class, 'show'])->name('admin.usermanagement.show');
-    Route::get('/admin/devicemanagement', [ProfileController::class, 'edit'])->name('admin.devicemanagement.show');
+    Route::resource('/users', UserController::class);
+    Route::resource('/roles', RoleController::class);
 });
 
-Route::middleware(['auth', 'isallowedtoview'])->group(function () {
-    Route::get('/devices', [ProfileController::class, 'edit'])->name('devices.show');
-    // Route::get('/devices/{device}/logs', [ProfileController::class, 'edit'])->name('devices.logs.show');
-});
+
+// Route::middleware(['auth', 'viewer'])->group(function () {
+//     Route::get('/devices', [ProfileController::class, 'edit'])->name('devices.show');
+//     // Route::get('/devices/{device}/logs', [ProfileController::class, 'edit'])->name('devices.logs.show');
+// });
 
 require __DIR__.'/auth.php';
