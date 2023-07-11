@@ -28,6 +28,19 @@
                                 id="email" type="email">
                         </div>
 
+                        <div class="mb-4">
+                            <div class="mb-3 xl:w-96">
+
+
+                                <select v-model="form.role_id" required :dataSet="roles"
+                                    class="block m-0 text-base font-normal text-gray-700 ease-in-out bg-white bg-no-repeat border border-gray-300 border-solid rounded appearance-none form-select bg-clip-padding focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    aria-label="Default select example">
+                                    
+                                    <!-- <option v-for="role in roles" :value="role.id">{{ role.name }}</option> -->
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="flex items-center justify-between">
                             <Button :form="form"></Button>
                         </div>
@@ -53,6 +66,7 @@ export default {
     },
     props: {
         user: Object,
+        roles: Object,
     },
     data() {
         return {
@@ -70,4 +84,6 @@ export default {
         }
     }
 }
+
+// const roles = props.roles?.map(role => ({ label: role.name, value: role.id }))
 </script>
