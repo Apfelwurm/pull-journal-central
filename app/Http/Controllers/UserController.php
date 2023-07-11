@@ -8,6 +8,7 @@ use App\Http\Requests\UserStoreRequest;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
+use App\Models\Role;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -36,7 +37,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Users/Create');
+        return Inertia::render('Users/Create', [
+            'roles' => Role::all(),
+        ]);
     }
 
     /**
@@ -46,14 +49,11 @@ class UserController extends Controller
     {
         $validatedData = $request->validated();
 
-        if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('public/avatars');
-            $validatedData['avatar'] = Storage::url($avatarPath);
-        }
-
         $validatedData['password'] = Hash::make($validatedData['password']);
-        User::create($validatedData);
+        $user = User::create($validatedData);
 
+        $user->role()->associate(Role::find($validatedData['role_id'])) ;
+        $user->save();
         return redirect()->route('users.index')->with('success', 'User has been created!');
     }
 
@@ -72,9 +72,12 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('role')->findOrFail($id);
 
-        return Inertia::render('Users/Edit', compact('user'));
+        return Inertia::render('Users/Edit',[
+            'roles' => Role::all(),
+            'user' => $user,
+        ]);
     }
 
     /**

@@ -10,6 +10,11 @@ class Role extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+
     public function rox()
     {
         return User::where('role_id', $this->id)->count();
