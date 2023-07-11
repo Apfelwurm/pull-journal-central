@@ -38,7 +38,7 @@
                                 <select v-model="form.role_id"
                                     class="block m-0 text-base font-normal text-gray-700 ease-in-out bg-white bg-no-repeat border border-gray-300 border-solid rounded appearance-none form-select bg-clip-padding focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                     aria-label="Default select example">
-                                    
+
                                     <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
                                 </select>
                             </div>
@@ -59,14 +59,14 @@
                         </div>
                     </form>
 
-                    
+
                 </div>
             </div>
         </div>
     </AppLayout>
 </template>
 
-<script>
+<script setup>
 import Button from '@/Components/Button.vue';
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 

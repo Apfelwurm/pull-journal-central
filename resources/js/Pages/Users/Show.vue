@@ -20,7 +20,7 @@
     </AppLayout>
 </template>
 
-<script>
+<script setup>
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 export default {

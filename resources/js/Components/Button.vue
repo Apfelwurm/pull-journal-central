@@ -6,10 +6,10 @@
     </button>
 </template>
 
-<script>
-export default {
-    props: {
-        form: Object
-    }
-}
+<script setup>
+const props = defineProps({
+    form: {
+        type: Object,
+    },
+});
 </script>

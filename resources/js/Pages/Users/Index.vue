@@ -1,5 +1,5 @@
 
-<script>
+<script setup>
 import Pagination from '@/Components/Pagination.vue';
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 export default {

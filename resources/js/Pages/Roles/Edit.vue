@@ -23,7 +23,7 @@
                             <Button :form="form"></Button>
                         </div>
                     </form>
-                    
+
                 </div>
 
             </div>
@@ -31,32 +31,23 @@
     </AppLayout>
 </template>
 
-<script>
+<script setup>
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import Button from "@/Components/Button.vue";
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 
-export default {
-    components: {
-        AppLayout,
-        Breadcrumb,
-        Button
+const props = defineProps({
+    role: {
+        type: Object,
     },
-    props: {
-        role: Object,
-    },
-    data() {
-        return {
-            form: this.$inertia.form({
-                name: this.role.name,
-            })
-        }
-    },
-    methods: {
-        submit() {
-            this.form.put(this.route('roles.update', this.role.id), {
-            })
-        }
-    }
-}
+});
+
+const form = useForm({
+    name: role.name,
+});
+
+const submit = () => {
+    form.put(route('roles.update', role.id));
+};
+
 </script>

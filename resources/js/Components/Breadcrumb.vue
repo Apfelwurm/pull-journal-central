@@ -8,13 +8,17 @@
     </h2>
 </template>
 
-<script>
+<script setup>
 
-export default {
-    props: {
-        property: Object,
-        title: String,
-        href: String
-    }
-}
+const props = defineProps({
+    property: {
+        type: Object,
+    },
+    title: {
+        type: String,
+    },
+    href: {
+        type: String,
+    },
+});
 </script>

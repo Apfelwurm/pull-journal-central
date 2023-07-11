@@ -26,38 +26,30 @@
                         </div>
                     </form>
 
-                    
+
                 </div>
             </div>
         </div>
     </AppLayout>
 </template>
-  
-<script>
+
+<script setup>
 import Button from '@/Components/Button.vue';
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
+import useForm from '@inertiajs/vue3';
 
-export default {
-    components: {
-        AppLayout,
-        Button
+const props = defineProps({
+    errors: {
+        type: Object,
     },
-    props: {
-        errors: Object
-    },
-    data() {
-        return {
-            form: this.$inertia.form({
-                name: '',
-            })
-        };
-    },
-    methods: {
-        submit() {
-            this.form.post(this.route('roles.store'), {
-            });
-        }
-    }
+});
+
+const form = useForm({
+    name: '',
+});
+
+const submit = () => {
+    form.post(route('roles.store'));
 };
+
 </script>
-  

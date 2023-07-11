@@ -1,9 +1,10 @@
-<script>
-export default {
-    props: {
-        links: Array
+<script setup>
+const props = defineProps({
+    links: {
+        type: Array,
     },
-}
+});
+
 </script>
 
 <template>

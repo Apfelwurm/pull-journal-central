@@ -126,31 +126,32 @@
     </AppLayout>
 </template>
 
-<script>
+
+<script setup>
+import { reactive } from 'vue'
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 
-export default {
-    components: {
-        AppLayout,
-    },
-    props: {
-        roles: Object
-    },
-    data() {
-		return {
-			term: this.$page.term || '',
-		}
-	},
-    methods: {
-        deleteRole(role) {
-            if (!confirm('Are you sure want to delete role?')) return;
-            this.$inertia.delete(route('roles.destroy', role.id), {
-                _token: this.$page.props.csrf_token,
-            });
-        },
-        search() {
-			this.$inertia.replace(this.route('roles.index', { term: this.term }))
-		},
-    }
-}
+const props = defineProps({
+  roles: Object,
+});
+
+const state = reactive({
+  term: term || ''
+});
+
+const { delete: deleteRole, replace } = useInertia();
+
+const search = () => {
+  replace(route('roles.index', { term: state.term }));
+};
+
+const confirmDeleteRole = (role) => {
+  if (!confirm('Are you sure want to delete role?')) return;
+  deleteRole(route('roles.destroy', role.id), {
+    _token: props.csrf_token
+  });
+};
 </script>
+
+
+
