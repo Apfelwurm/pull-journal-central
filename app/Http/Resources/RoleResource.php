@@ -18,7 +18,8 @@ class RoleResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'count' => User::where('role_id', $this->id)->count(),
+            'organisation' => $this->organisation,
+            'usercount' => User::where('role_id', $this->id)->count(),
             'formatted_created_at' => $this->created_at->format('d M Y'),
         ];
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrganisationStoreRequest;
 use App\Http\Resources\OrganisationResource;
 use App\Models\Organisation;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -39,7 +40,14 @@ class OrganisationController extends Controller
     public function store(OrganisationStoreRequest $request)
     {
         $validatedData = $request->validated();
-        Organisation::create($validatedData);
+        $organisation = Organisation::create($validatedData);
+
+        Role::create(['name' => 'Administrator', 'organisation_id' => $organisation->id]);
+        Role::create(['name' => 'Viewer', 'organisation_id' => $organisation->id]);
+        Role::create(['name' => 'Guest', 'organisation_id' => $organisation->id]);
+
+
+
 
         return redirect()->route('organisations.index')->with('success', 'Organisation has been created!');
     }
@@ -75,6 +83,11 @@ class OrganisationController extends Controller
      */
     public function destroy(Organisation $organisation)
     {
+        if ($organisation->id == 1)
+        {
+            return back()->with('error', 'Default Organisation can not be deleted!');
+        }
+
         $organisation->delete();
 
         return back()->with('delete', 'Organisation has been deleted!');

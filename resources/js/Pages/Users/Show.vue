@@ -11,8 +11,9 @@
                     <hr class="my-4">
                     <div class="my-2">
                         <h2 class="text-sm font-bold text-gray-600 uppercase">About</h2>
-                        <p class="mt-2 text-gray-600">Role: {{ getUser.role.name }}
-                        </p>
+                        <p class="mt-2 text-gray-600">Role: {{ getUser.role.name }}</p>
+                        <p class="mt-2 text-gray-600">Organisataion: {{ getUser.organisation.name }}</p>
+
                     </div>
                 </div>
             </div>

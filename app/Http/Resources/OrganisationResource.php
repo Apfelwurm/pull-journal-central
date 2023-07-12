@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrganisationResource extends JsonResource
@@ -18,7 +18,7 @@ class OrganisationResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'count' => User::where('organisation_id', $this->id)->count(),
+            'usercount' => $this->users()->count(),
             'formatted_created_at' => $this->created_at->format('d M Y'),
         ];
     }

@@ -30,7 +30,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Roles/Create');
+        //
     }
 
     /**
@@ -38,10 +38,7 @@ class RoleController extends Controller
      */
     public function store(RoleStoreRequest $request)
     {
-        $validatedData = $request->validated();
-        Role::create($validatedData);
-
-        return redirect()->route('roles.index')->with('success', 'Role has been created!');
+       //
     }
 
     /**
@@ -57,7 +54,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        return Inertia::render('Roles/Edit', compact('role'));
+        //
     }
 
     /**
@@ -65,9 +62,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Role::where('id', $id)->update($request->all());
-
-        return redirect('/roles')->with('success', 'Role has been updated!');
+        //
     }
 
     /**
@@ -75,8 +70,6 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        $role->delete();
-
-        return back()->with('delete', 'Role has been deleted!');
+        //
     }
 }

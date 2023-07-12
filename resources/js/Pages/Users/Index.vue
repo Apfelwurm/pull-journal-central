@@ -53,7 +53,7 @@ const deleteUser = (user) => {
 			<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 				<div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
 
-					
+
 
 					<div class="flex justify-end mt-3">
 						<div class="mb-3 xl:w-96">
@@ -97,6 +97,10 @@ const deleteUser = (user) => {
 									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
 									Role
 								</th>
+                                <th scope="col"
+									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+									Organisation
+								</th>
 								<th scope="col"
 									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
 									Created at
@@ -131,7 +135,13 @@ const deleteUser = (user) => {
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
 									<div class="text-sm text-center text-gray-900">
-										{{ user.role ? user.role.name : 'Not available' }}
+										{{ user.role.name }}
+									</div>
+								</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+									<div class="text-sm text-center text-gray-900">
+                                        <inertia-link class="transition hover:text-blue-500" :href="`organisations/${user.organisation.id}`">{{
+                                            user.organisation.name }}</inertia-link>
 									</div>
 								</td>
 								<td class="px-6 py-4 text-center whitespace-nowrap">

@@ -64,7 +64,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $getUser = User::with('role')->findOrFail($id);
+        $getUser = User::with('role')->with('organisation')->findOrFail($id);
 
         return Inertia::render('Users/Show', compact('getUser'));
     }

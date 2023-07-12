@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
+            $table->foreignId('organisation_id')->default(1)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
 
         Role::insert([
-            ['name' => 'Administrator', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-            ['name' => 'Viewer', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-            ['name' => 'Guest', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Administrator', 'organisation_id' => 1,'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Viewer', 'organisation_id' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Guest', 'organisation_id' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
         ]);
     }
 
