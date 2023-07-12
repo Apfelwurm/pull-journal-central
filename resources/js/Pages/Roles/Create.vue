@@ -2,7 +2,7 @@
     <AppLayout title="Create role">
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Create role
+                <Link :href="route('roles.index')">Roles</Link> / Create role
             </h2>
         </template>
 
@@ -36,7 +36,8 @@
 <script setup>
 import Button from '@/Components/Button.vue';
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-import useForm from '@inertiajs/vue3';
+import { useForm, Link } from '@inertiajs/vue3'
+
 
 const props = defineProps({
     errors: {

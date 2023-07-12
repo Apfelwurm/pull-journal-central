@@ -24,7 +24,7 @@
                         <div class="mb-3 xl:w-96">
                             <div class="relative flex items-stretch w-4/5 mb-3 input-group">
 
-                                <input id="search" type='text' v-model="term" @keyup="search"
+                                <input id="search" type='text' v-model="term"
                                     class="outline-none focus:ring-0 rounded-r-none form-control relative min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0"
                                     placeholder="Search...">
 
@@ -119,7 +119,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <Pagination class="mt-6" :links="roles.links" />
+                    <Pagination class="mt-6" :links="roles.meta.links" />
                 </div>
             </div>
         </div>
@@ -128,26 +128,31 @@
 
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref, watch } from 'vue';
+import { router } from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue';
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
+import debounce from 'lodash.debounce'
 
 const props = defineProps({
   roles: Object,
 });
 
+const term = ref('')
 const state = reactive({
   term: term || ''
 });
 
-const { delete: deleteRole, replace } = useInertia();
+watch(term, debounce(() => {
+	router.get(route('roles.index'), {term: state.term}, {preserveState: true, preserveScroll: true, only: ['roles']})
+}, 300));
 
-const search = () => {
-  replace(route('roles.index', { term: state.term }));
-};
 
-const confirmDeleteRole = (role) => {
+
+
+const deleteRole = (role) => {
   if (!confirm('Are you sure want to delete role?')) return;
-  deleteRole(route('roles.destroy', role.id), {
+  router.delete(route('roles.destroy', role.id), {
     _token: props.csrf_token
   });
 };

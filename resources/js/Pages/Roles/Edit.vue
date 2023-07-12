@@ -35,6 +35,7 @@
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import Button from "@/Components/Button.vue";
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { useForm } from '@inertiajs/vue3'
 
 const props = defineProps({
     role: {
@@ -43,11 +44,11 @@ const props = defineProps({
 });
 
 const form = useForm({
-    name: role.name,
+    name: props.role.name,
 });
 
 const submit = () => {
-    form.put(route('roles.update', role.id));
+    form.put(route('roles.update', props.role.id));
 };
 
 </script>
