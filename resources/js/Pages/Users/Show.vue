@@ -23,18 +23,9 @@
 <script setup>
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 
-export default {
-    components: {
-        AppLayout,
+const props = defineProps({
+    getUser: {
+        type: Object,
     },
-    props: {
-        getUser: Object,
-    },
-    data() {
-        return {
-            user: {},
-        }
-    },
-
-}
+});
 </script>

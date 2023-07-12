@@ -163,7 +163,7 @@ const deleteUser = (user) => {
 							</tr>
 						</tbody>
 					</table>
-					<Pagination class="mt-6" :links="users.meta.links" />
+					<Pagination class="mt-6" :links="users.meta.links" :term="term" />
 				</div>
 			</div>
 		</div>

@@ -119,7 +119,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <Pagination class="mt-6" :links="roles.meta.links" />
+                    <Pagination class="mt-6" :links="roles.meta.links" :term="term" />
                 </div>
             </div>
         </div>

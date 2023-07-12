@@ -3,6 +3,9 @@ const props = defineProps({
     links: {
         type: Array,
     },
+    term: {
+        type: String,
+    },
 });
 
 </script>
@@ -15,7 +18,7 @@ const props = defineProps({
                     v-html="link.label" />
                 <inertia-link v-else
                     class="mr-1 mb-1 px-4 py-3 text-sm leading-4 border rounded  focus:border-indigo-500 focus:text-indigo-500"
-                    :class="{ 'bg-blue-700 text-white': link.active }" :href="link.url" v-html="link.label" />
+                    :class="{ 'bg-blue-700 text-white': link.active }" :href="link.url + '&term=' + term" v-html="link.label" preserve-state/>
             </template>
         </div>
     </div>
