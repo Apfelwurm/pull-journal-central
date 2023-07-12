@@ -78,7 +78,7 @@ const deleteUser = (user) => {
 					</div>
 
 					<table class="min-w-full divide-y divide-gray-200">
-                        <caption>User listing</caption>
+                        <caption style="display: none;">User listing</caption>
 						<thead class="bg-gray-50">
 							<tr>
 								<th scope="col"

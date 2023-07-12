@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <table class="min-w-full divide-y divide-gray-200">
-                        <caption>Roles listing</caption>
+                        <caption style="display: none;">Roles listing</caption>
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col"
