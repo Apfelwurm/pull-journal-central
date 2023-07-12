@@ -36,7 +36,7 @@
                                     class="block m-0 text-base font-normal text-gray-700 ease-in-out bg-white bg-no-repeat border border-gray-300 border-solid rounded appearance-none form-select bg-clip-padding focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                     aria-label="Default select example">
 
-                                    <!-- <option v-for="role in roles" :value="role.id">{{ role.name }}</option> -->
+                                    <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
                                 </select>
                             </div>
                         </div>
@@ -54,36 +54,29 @@
 </template>
 
 <script setup>
+
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import Button from "@/Components/Button.vue";
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { useForm } from '@inertiajs/vue3'
 
-export default {
-    components: {
-        AppLayout,
-        Breadcrumb,
-        Button
+const props = defineProps({
+    user: {
+        type: Object,
     },
-    props: {
-        user: Object,
-        roles: Object,
+    roles: {
+        type: Object,
     },
-    data() {
-        return {
-            form: this.$inertia.form({
-                name: this.user.name,
-                email: this.user.email,
-            })
-        }
-    },
-    methods: {
-        submit() {
-            this.form.put(this.route('users.update', this.user.id), {
-                _token: this.$page.props.csrf_token,
-            })
-        }
-    }
-}
+});
 
-// const roles = props.roles?.map(role => ({ label: role.name, value: role.id }))
+const form = useForm({
+    name: props.user.name,
+    role_id: props.user.role.id,
+    email: props.user.email,
+});
+
+const submit = () => {
+    form.put(route('users.update', props.user.id));
+};
+
 </script>

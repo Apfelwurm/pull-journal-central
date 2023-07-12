@@ -1,55 +1,33 @@
 
 <script setup>
+
+import { reactive, ref, watch } from 'vue';
+import { router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue';
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-export default {
-	components: {
-		AppLayout,
-		Pagination
-	},
-	props: {
-		users: Object
-	},
-	data() {
-		return {
-			selectedUsers: [],
-			term: this.$page.term || '',
-		}
-	},
-	methods: {
-		confirmAction(message, callback) {
-			if (confirm(message)) {
-				callback();
-			}
-		},
-		deleteUser: function (user) {
-			this.confirmAction('Are you sure you want to delete user?', function () {
-				this.$inertia.delete(route('users.destroy', user.id));
-			}.bind(this));
-		},
-		search() {
-			this.$inertia.replace(this.route('users.index', { term: this.term }))
-		},
-		async deleteSelectedUsers() {
-			if (this.selectedUsers.length === 0) {
-				return;
-			}
+import debounce from 'lodash.debounce'
 
-			const confirmed = confirm(`Are you sure you want to delete ${this.selectedUsers.length} user(s)?`);
-			if (!confirmed) {
-				return;
-			}
+const props = defineProps({
+  users: Object,
+});
 
-			try {
-				await this.$inertia.post('/users/delete', { ids: this.selectedUsers });
-				this.selectedUsers = [];
-			} catch (error) {
-				console.error(error);
-				alert('An error occurred while deleting the selected users.');
-			}
-		},
-	}
-}
+const term = ref('')
+const state = reactive({
+  term: term || ''
+});
+
+watch(term, debounce(() => {
+	router.get(route('users.index'), {term: state.term}, {preserveState: true, preserveScroll: true, only: ['users']})
+}, 300));
+
+
+const deleteUser = (user) => {
+  if (!confirm('Are you sure want to delete user?')) return;
+  router.delete(route('users.destroy', user.id), {
+    _token: props.csrf_token
+  });
+};
+
 </script>
 <template>
 	<AppLayout title="Users">
@@ -75,14 +53,7 @@ export default {
 			<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 				<div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
 
-					<a href="#" @click="deleteSelectedUsers"
-						class="float-left px-4 py-2 mt-3 text-red-400 duration-100 rounded hover:text-red-600">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor"
-								fill="none"
-								d="M3 6h18M6 6l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 4v-1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1" />
-						</svg>
-					</a>
+					
 
 					<div class="flex justify-end mt-3">
 						<div class="mb-3 xl:w-96">
@@ -110,7 +81,6 @@ export default {
                         <caption>User listing</caption>
 						<thead class="bg-gray-50">
 							<tr>
-								<th scope="col"></th>
 								<th scope="col"
 									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
 									ID
@@ -138,10 +108,6 @@ export default {
 						</thead>
 						<tbody class="bg-white divide-y divide-gray-200">
 							<tr v-for="user in users.data" :key="user.id">
-								<td>
-									<input type="checkbox" v-model="selectedUsers" :value="user.id"
-										class="ml-5 outline-none" />
-								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
 									<div class="text-sm text-center text-gray-900">
 										{{ user.id }}
@@ -197,7 +163,7 @@ export default {
 							</tr>
 						</tbody>
 					</table>
-					<Pagination class="mt-6" :links="users.links" />
+					<Pagination class="mt-6" :links="users.meta.links" />
 				</div>
 			</div>
 		</div>

@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Models\Role;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Resources\UserResource;
+
 
 class UserController extends Controller
 {
@@ -21,15 +23,15 @@ class UserController extends Controller
     {
         $term = $request->input('term');
 
-        $users = User::with('role')
-            ->when($term, function ($query, $term) {
-                $query->where('name', 'LIKE', '%' . $term . '%')
-                    ->orWhere('email', 'LIKE', '%' . $term . '%');
-            })
-            ->latest()
-            ->paginate(5);
 
-        return Inertia::render('Users/Index', compact('users'));
+            return Inertia::render('Users/Index', [
+                'users' => UserResource::collection(User::with('role')->when($term, function ($query, $term) {
+                    $query->where('name', 'LIKE', '%' . $term . '%')
+                    ->orWhere('email', 'LIKE', '%' . $term . '%');
+                })->latest()
+                ->paginate(5)),
+            ]);
+
     }
 
     /**
@@ -98,14 +100,6 @@ class UserController extends Controller
         User::destroy($id);
 
         return back()->with('delete', 'User has been deleted!');
-    }
-
-    public function deleteMultiple(Request $request)
-    {
-        $userIds = $request->input('ids');
-        User::whereIn('id', $userIds)->delete();
-
-        return redirect()->route('users.index')->with('success', 'Operation successfully!');
     }
 
 }

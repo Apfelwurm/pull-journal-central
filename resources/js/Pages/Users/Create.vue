@@ -3,7 +3,7 @@
 
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Create user
+                <Link :href="route('users.index')">Users</Link> / Create user
             </h2>
         </template>
         <div class="py-12">
@@ -69,34 +69,27 @@
 <script setup>
 import Button from '@/Components/Button.vue';
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { useForm, Link } from '@inertiajs/vue3'
 
-export default {
-    components: {
-        AppLayout,
-        Button,
+
+const props = defineProps({
+    errors: {
+        type: Object,
     },
-    props: {
-        errors: Object,
-        roles: Object,
+    roles: {
+        type: Object,
     },
-    data() {
-        return {
-            form: this.$inertia.form({
-                name: '',
-                email: '',
-                role_id: 2,
-                password: '',
-                avatar: null,
-                description: ''
-            })
-        }
-    },
-    methods: {
-        submit() {
-            this.form.post(this.route('users.store'), {
-                _token: this.$page.props.csrf_token,
-            });
-        }
-    }
-}
+});
+
+const form = useForm({
+    name: '',
+    email: '',
+    role_id: 3,
+    password: '',
+});
+
+const submit = () => {
+    form.post(route('users.store'));
+};
+
 </script>
