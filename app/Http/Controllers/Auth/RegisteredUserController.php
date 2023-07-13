@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' =>  $usercount == 0 ? UserRoleEnum::ADMIN : UserRoleEnum::GUEST,
+            'role' =>  $usercount == 0 ? UserRoleEnum::SUPERADMIN : UserRoleEnum::GUEST,
         ]);
 
         event(new Registered($user));

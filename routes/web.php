@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrganisationController;
-use App\Http\Middleware\Admin;
+use App\Http\Middleware\SuperAdmin;
+use App\Http\Middleware\DeviceAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,22 +34,32 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/test', function () {
-    dd();
-})->middleware(['auth', 'verified'])->name('test');
 
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::resource('/users', UserController::class);
+Route::middleware('auth', 'role:viewer|deviceadmin|superadmin')->group(function () {
+    Route::resource('/devices', DeviceController::class)->only('index');
+});
+
+Route::middleware('auth', 'role:deviceadmin|superadmin')->group(function () {
+    // Route::resource('/devices', DeviceController::class)->only('index');
+});
+
+
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+    Route::resource('/users', UserController::class)->except('show');
+    Route::resource('/devices', DeviceController::class)->except('index');
     Route::resource('/organisations', OrganisationController::class);
 });
+
+
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{User}', [UserController::class, 'show'])->name('users.show');
-
 
 });
 

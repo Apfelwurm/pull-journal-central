@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\DeviceOrganisationScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Enums\UserRoleEnum;
 
 
-class User extends Authenticatable
+class Device extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -20,9 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
-        'password',
-        'role',
+        'deviceidentifier',
     ];
 
     /**
@@ -41,29 +39,18 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-        'role' => UserRoleEnum::class,
+        'verified_at' => 'datetime',
+        'last_api_call' => 'datetime',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new DeviceOrganisationScope);
+    }
 
     public function organisation()
     {
         return $this->belongsTo(Organisation::class);
-    }
-
-    public function isSuperAdmin(): bool
-    {
-        return $this->role === UserRoleEnum::SUPERADMIN;
-    }
-
-    public function isDeviceAdmin(): bool
-    {
-        return $this->role === UserRoleEnum::DEVICEADMIN;
-    }
-
-    public function isViewer(): bool
-    {
-        return $this->role === UserRoleEnum::VIEWER;
     }
 
 }

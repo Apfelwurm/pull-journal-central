@@ -1,7 +1,8 @@
 look into except on routes
 implement organisation and role show / user view / filter on users site and link the organisation links
 write tests
-add deviceadmin and rename admin to superadmin
+write factorys
+
 add devices page / model / controller
 add organisation registration url
 readme
