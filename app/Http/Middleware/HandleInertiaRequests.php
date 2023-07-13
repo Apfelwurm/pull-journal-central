@@ -33,6 +33,13 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
+                'isAdmin' => !empty($request->user()) ? $request->user()->isAdmin() : 0,
+                'isViewer' => !empty($request->user()) ? $request->user()->isViewer() : 0,
+            ],
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'delete' => fn () => $request->session()->get('delete'),
+                'error' => fn () => $request->session()->get('error'),
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

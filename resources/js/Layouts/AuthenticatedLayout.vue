@@ -8,6 +8,8 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+
+
 </script>
 
 <template>
@@ -32,6 +34,18 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
+                                <!-- <NavLink v-if="$page.props.auth.isViewer || $page.props.auth.isAdmin" :href="route('devices.show')" :active="route().current('devices.show')">
+                                    Devices
+                                </NavLink> -->
+                                <NavLink v-if="$page.props.auth.isAdmin" :href="route('users.index')" :active="route().current('users.index')">
+                                    Users
+                                </NavLink>
+                                <NavLink v-if="$page.props.auth.isAdmin" :href="route('organisations.index')" :active="route().current('organisations.index')">
+                                    Organisations
+                                </NavLink>
+                                <!-- <NavLink v-if="$page.props.auth.isViewer || $page.props.auth.isAdmin" :href="route('admin.devicemanagement.show')" :active="route().current('admin.devicemanagement.show')">
+                                    Devicemanagement
+                                </NavLink> -->
                             </div>
                         </div>
 
@@ -141,6 +155,38 @@ const showingNavigationDropdown = ref(false);
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
+
+                <div v-if="$page.props.flash.success" class="py-4 text-center bg-indigo-900 lg:px-4">
+                    <div style="background-color: #6875F5"
+                        class="flex items-center p-2 leading-none text-indigo-100 lg:rounded-full lg:inline-flex"
+                        role="alert">
+                        <span
+                            class="flex px-2 py-1 mr-3 text-xs font-bold uppercase bg-indigo-500 rounded-full">Success</span>
+                        <span class="flex-auto mr-2 font-semibold text-left">{{ $page.props.flash.success }}</span>
+                    </div>
+                </div>
+
+                <div v-if="$page.props.flash.delete" class="py-4 text-center bg-indigo-900 lg:px-4">
+                    <div style="background-color: #6875F5"
+                        class="flex items-center p-2 leading-none text-indigo-100 lg:rounded-full lg:inline-flex"
+                        role="alert">
+                        <span
+                            class="flex px-2 py-1 mr-3 text-xs font-bold uppercase bg-indigo-500 rounded-full">Delete</span>
+                        <span class="flex-auto mr-2 font-semibold text-left">{{ $page.props.flash.delete }}</span>
+                    </div>
+                </div>
+
+                <div v-if="$page.props.flash.error" class="py-4 text-center bg-indigo-900 lg:px-4">
+                    <div style="background-color: #fd4e2f"
+                        class="flex items-center p-2 leading-none text-indigo-100 lg:rounded-full lg:inline-flex"
+                        role="alert">
+                        <span
+                            class="flex px-2 py-1 mr-3 text-xs font-bold uppercase bg-indigo-500 rounded-full">Error</span>
+                        <span class="flex-auto mr-2 font-semibold text-left">{{ $page.props.flash.error }}</span>
+                    </div>
+                </div>
+
+
             </header>
 
             <!-- Page Content -->
