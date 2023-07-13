@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Http\Requests\UserStoreRequest;
-use Illuminate\Support\Facades\Hash;
-
 use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Http\Resources\UserResource;
 use \App\Enums\UserRoleEnum;
+
+use App\Models\Organisation;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UserStoreRequest;
 
 class UserController extends Controller
 {
@@ -24,7 +25,7 @@ class UserController extends Controller
 
 
             return Inertia::render('Users/Index', [
-                'users' => UserResource::collection(User::when($term, function ($query, $term) {
+                'users' => UserResource::collection(User::with('organisation')->when($term, function ($query, $term) {
                     $query->where('name', 'LIKE', '%' . $term . '%')
                     ->orWhere('email', 'LIKE', '%' . $term . '%');
                 })->latest()
@@ -33,7 +34,7 @@ class UserController extends Controller
 
     }
 
-    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -41,7 +42,7 @@ class UserController extends Controller
     {
         return Inertia::render('Users/Create', [
             'roles' => UserRoleEnum::all(),
-            // 'roles' => AsEnumCollection::class.':'.UserRoleEnum::class,
+            'organisations' => Organisation::all(),
         ]);
     }
 
@@ -54,9 +55,9 @@ class UserController extends Controller
 
         $validatedData['password'] = Hash::make($validatedData['password']);
         $user = User::create($validatedData);
-
-        // $user->role()->associate(Role::find($validatedData['role_id'])) ;
+        $user->organisation()->associate(Organisation::find($validatedData['organisation_id'])) ;
         $user->save();
+
         return redirect()->route('users.index')->with('success', 'User has been created!');
     }
 
@@ -78,7 +79,8 @@ class UserController extends Controller
         $user = User::with('organisation')->findOrFail($id);
 
         return Inertia::render('Users/Edit',[
-            'roles' => \App\Enums\UserRoleEnum,
+            'roles' => UserRoleEnum::all(),
+            'organisations' => Organisation::all(),
             'user' => $user,
         ]);
     }

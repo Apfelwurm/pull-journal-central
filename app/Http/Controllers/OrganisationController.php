@@ -39,7 +39,7 @@ class OrganisationController extends Controller
     public function store(OrganisationStoreRequest $request)
     {
         $validatedData = $request->validated();
-        $organisation = Organisation::create($validatedData);
+        Organisation::create($validatedData);
 
         return redirect()->route('organisations.index')->with('success', 'Organisation has been created!');
     }

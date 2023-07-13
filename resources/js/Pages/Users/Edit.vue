@@ -32,11 +32,22 @@
                             <div class="mb-3 xl:w-96">
 
 
-                                <select v-model="form.role_id" required :dataSet="roles"
+                                <select v-model="form.role" required :dataSet="roles"
                                     class="block m-0 text-base font-normal text-gray-700 ease-in-out bg-white bg-no-repeat border border-gray-300 border-solid rounded appearance-none form-select bg-clip-padding focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                     aria-label="Default select example">
 
-                                    <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
+                                    <option v-for="role in roles">{{ role }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="mb-3 xl:w-96">
+                                <select v-model="form.organisation_id"
+                                    class="block m-0 text-base font-normal text-gray-700 ease-in-out bg-white bg-no-repeat border border-gray-300 border-solid rounded appearance-none form-select bg-clip-padding focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    aria-label="Default select example">
+
+                                    <option v-for="organisation in organisations" :value="organisation.id">{{ organisation.name }}</option>
                                 </select>
                             </div>
                         </div>
@@ -67,11 +78,15 @@ const props = defineProps({
     roles: {
         type: Object,
     },
+    organisations: {
+        type: Object,
+    },
 });
 
 const form = useForm({
     name: props.user.name,
-    role_id: props.user.role.id,
+    role: props.user.role,
+    organisation_id: props.user.organisation.id,
     email: props.user.email,
 });
 
