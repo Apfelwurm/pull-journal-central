@@ -8,11 +8,10 @@ use App\Http\Requests\UserStoreRequest;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
-use App\Models\Role;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Http\Resources\UserResource;
-
+use \App\Enums\UserRoleEnum;
 
 class UserController extends Controller
 {
@@ -25,7 +24,7 @@ class UserController extends Controller
 
 
             return Inertia::render('Users/Index', [
-                'users' => UserResource::collection(User::with('role')->when($term, function ($query, $term) {
+                'users' => UserResource::collection(User::when($term, function ($query, $term) {
                     $query->where('name', 'LIKE', '%' . $term . '%')
                     ->orWhere('email', 'LIKE', '%' . $term . '%');
                 })->latest()
@@ -34,13 +33,15 @@ class UserController extends Controller
 
     }
 
+    
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         return Inertia::render('Users/Create', [
-            'roles' => Role::all(),
+            'roles' => UserRoleEnum::all(),
+            // 'roles' => AsEnumCollection::class.':'.UserRoleEnum::class,
         ]);
     }
 
@@ -54,7 +55,7 @@ class UserController extends Controller
         $validatedData['password'] = Hash::make($validatedData['password']);
         $user = User::create($validatedData);
 
-        $user->role()->associate(Role::find($validatedData['role_id'])) ;
+        // $user->role()->associate(Role::find($validatedData['role_id'])) ;
         $user->save();
         return redirect()->route('users.index')->with('success', 'User has been created!');
     }
@@ -64,7 +65,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $getUser = User::with('role')->with('organisation')->findOrFail($id);
+        $getUser = User::with('organisation')->findOrFail($id);
 
         return Inertia::render('Users/Show', compact('getUser'));
     }
@@ -74,10 +75,10 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::with('role')->findOrFail($id);
+        $user = User::with('organisation')->findOrFail($id);
 
         return Inertia::render('Users/Edit',[
-            'roles' => Role::all(),
+            'roles' => \App\Enums\UserRoleEnum,
             'user' => $user,
         ]);
     }

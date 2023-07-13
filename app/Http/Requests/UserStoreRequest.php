@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\UserRoleEnum;
 
 class UserStoreRequest extends FormRequest
 {
@@ -25,7 +26,12 @@ class UserStoreRequest extends FormRequest
             'name' => 'required|min:2|max:255',
             'email' => 'required|email|min:2|max:255|unique:users',
             'password' => 'required|min:8|max:255',
-            'role_id' => 'required|exists:roles,id',
+            // TODO: fix validation
+            'role' => [
+                "required",
+                new Enum(UserRoleEnum::class)
+           ],
         ];
     }
+
 }

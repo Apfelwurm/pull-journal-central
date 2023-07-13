@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use App\Providers\RouteServiceProvider;
+use App\Enums\UserRoleEnum;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,13 +45,8 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' =>  $usercount == 0 ? UserRoleEnum::ADMIN : UserRoleEnum::GUEST,
         ]);
-
-        if ($usercount == 0){
-            $role = Role::find(1);
-            $user->role()->associate($role) ;
-            $user->save();
-        }
 
         event(new Registered($user));
 

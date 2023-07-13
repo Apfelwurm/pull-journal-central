@@ -6,6 +6,7 @@
                 <Link :href="route('users.index')">Users</Link> / Create user
             </h2>
         </template>
+        
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="w-full max-w-xs m-auto">
@@ -35,11 +36,11 @@
 
                         <div class="mb-4">
                             <div class="mb-3 xl:w-96">
-                                <select v-model="form.role_id"
+                                <select v-model="form.role"
                                     class="block m-0 text-base font-normal text-gray-700 ease-in-out bg-white bg-no-repeat border border-gray-300 border-solid rounded appearance-none form-select bg-clip-padding focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                     aria-label="Default select example">
 
-                                    <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
+                                    <option v-for="role in roles">{{ role }}</option>
                                 </select>
                             </div>
                         </div>
@@ -84,7 +85,7 @@ const props = defineProps({
 const form = useForm({
     name: '',
     email: '',
-    role_id: 3,
+    role: 'guest',
     password: '',
 });
 
