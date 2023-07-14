@@ -41,6 +41,7 @@ class Device extends Authenticatable
     protected $casts = [
         'verified_at' => 'datetime',
         'last_api_call' => 'datetime',
+        // 'verified_from' => User::class,
     ];
 
     protected static function booted(): void
@@ -53,4 +54,8 @@ class Device extends Authenticatable
         return $this->belongsTo(Organisation::class);
     }
 
+    public function verifiedfrom()
+    {
+        return $this->belongsTo(User::class, 'verified_from', 'id');
+    }
 }

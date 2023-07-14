@@ -15,7 +15,6 @@
 
             </h2>
         </template>
-
         <div class="py-12">
 
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -55,11 +54,27 @@
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                    Device Identifier
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                     Created at
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                    User count
+                                    Log count
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                    Organisation
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                    Last Connection
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                    Verification
                                 </th>
                                 <th scope="col" class="relative px-6 py-3">
                                     <span class="sr-only">Edit</span>
@@ -85,6 +100,12 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-center text-gray-900">
+                                        <inertia-link class="transition hover:text-blue-500" :href="`devices/${device.id}`">{{
+                                            device.deviceidentifier }}</inertia-link>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-center text-gray-900">
                                         <span
                                             class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
                                             {{ device.formatted_created_at }}
@@ -94,12 +115,45 @@
                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                     <span
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-purple-800 bg-purple-200 rounded-full">
-                                        {{ device.usercount }}
+                                        {{ device.logcount }}
                                     </span>
+                                </td>
+                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                    <inertia-link class="transition hover:text-blue-500" :href="`organisations/${device.organisation.id}`">{{
+                                            device.organisation.name }}</inertia-link>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-center text-gray-900">
+                                        <span v-if="device.formatted_last_api_call  === 'never'"
+                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-red-100 rounded-full">
+                                            {{ device.formatted_last_api_call }}
+                                        </span>
+                                        <span v-else
+                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
+                                            {{ device.formatted_last_api_call }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-center text-gray-900">
+                                        <span v-if="device.formatted_verified_at  === 'not verified'"
+                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-red-100 rounded-full">
+                                            {{ device.formatted_verified_at }}
+                                        </span>
+                                        <div v-else>
+                                        <span 
+                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
+                                            <div>{{ device.formatted_verified_at }}</div>
+                                        </span>
+                                            <div>by: <inertia-link class="transition hover:text-blue-500" :href="`users/${device.verifiedfrom.id}`">{{
+                                            device.verifiedfrom.name }}</inertia-link></div>
+
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
 
-                                    <inertia-link :href="`/devices/${device.id}/edit`"
+                                    <inertia-link title="Edit Device" :href="`/devices/${device.id}/edit`"
                                         class="float-left px-4 py-2 text-green-400 duration-100 rounded hover:text-green-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -107,7 +161,7 @@
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg></inertia-link>
 
-                                    <a href="#" @click="deleteDevice(device)"
+                                    <a href="#" title="Delete Device" @click="deleteDevice(device)"
                                         class="float-left px-4 py-2 ml-2 text-red-400 duration-100 rounded hover:text-red-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -115,6 +169,20 @@
                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
                                     </a>
+                                    <div v-if="device.formatted_last_api_call  === 'never'">
+                                    <a title="Verify Device" href="#" @click="verifyDevice(device)"
+                                        class="float-left px-4 py-2 ml-2 text-green-400 duration-100 rounded hover:text-green-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="green" stroke="currentColor" viewBox="0 0 448 512"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+                                    </a>
+                                    </div>
+                                    <div v-else>
+                                    <a title="Unverify Device" href="#" @click="unverifyDevice(device)"
+                                        class="float-left px-4 py-2 ml-2 text-red-400 duration-100 rounded hover:text-red-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="red" stroke="currentColor" viewBox="0 0 448 512"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+                                    </a>
+                                    </div>
+
+
                                 </td>
                             </tr>
                         </tbody>

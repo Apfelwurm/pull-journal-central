@@ -51,6 +51,12 @@ class User extends Authenticatable
         return $this->belongsTo(Organisation::class);
     }
 
+//TODO: ref key fix
+    public function verified_devices(): HasMany
+    {
+        return $this->hasMany(Device::class);
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->role === UserRoleEnum::SUPERADMIN;
