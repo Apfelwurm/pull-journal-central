@@ -169,7 +169,7 @@
                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
                                     </a>
-                                    <div v-if="device.formatted_last_api_call  === 'never'">
+                                    <div v-if="device.formatted_verified_at  === 'not verified'">
                                     <a title="Verify Device" href="#" @click="verifyDevice(device)"
                                         class="float-left px-4 py-2 ml-2 text-green-400 duration-100 rounded hover:text-green-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="green" stroke="currentColor" viewBox="0 0 448 512"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>

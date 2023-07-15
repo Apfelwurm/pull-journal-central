@@ -30,6 +30,8 @@ class TestDevicesSeeder extends Seeder
             'verified_from' => 1,
         ]);
 
+        sleep(4);
+
         DB::table('devices')->insert([
             'name' => 'testgeraet2',
             'deviceidentifier' => 'testgeraet2id',
@@ -37,6 +39,7 @@ class TestDevicesSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+        sleep(4);
 
         DB::table('devices')->insert([
             'name' => 'testgeraet3',
@@ -45,6 +48,7 @@ class TestDevicesSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+        sleep(4);
 
         DB::table('devices')->insert([
             'name' => 'testgeraet4',

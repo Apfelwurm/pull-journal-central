@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use App\Http\Resources\DeviceResource;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Events\DeviceCreated;
+use App\Events\DeviceRemoved;
+use App\Events\DeviceUnverified;
+use App\Events\DeviceVerified;
+use App\Events\DeviceUpdated;
 
 class DeviceController extends Controller
 {
@@ -67,7 +72,13 @@ class DeviceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Device::where('id', $id)->update($request->all());
+        $device = Device::where('id', $id)->first();
+
+        if (isset($device))
+        {
+            $device->update($request->all());
+            event(new DeviceUpdated($device));
+        }
 
         return redirect('/devices')->with('success', 'Device has been updated!');
     }
@@ -84,6 +95,8 @@ class DeviceController extends Controller
 
         $device->delete();
 
+        event(new DeviceRemoved($device));
+
         return back()->with('delete', 'Device has been deleted!');
     }
 
@@ -93,6 +106,8 @@ class DeviceController extends Controller
         $device->verified_at = Carbon::now();
         $device->verified_from = Auth::user()->id;
         $device->save();
+        event(new DeviceVerified($device));
+
         return redirect('/devices')->with('success', 'Device has been verified!');
 
     }
@@ -102,6 +117,7 @@ class DeviceController extends Controller
         $device->verified_at = null;
         $device->verified_from = null;
         $device->save();
+        event(new DeviceUnverified($device));
         return redirect('/devices')->with('success', 'Device has been unverified!');
     }
 
