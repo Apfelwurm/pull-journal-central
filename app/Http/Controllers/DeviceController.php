@@ -6,6 +6,8 @@ use Inertia\Inertia;
 use App\Models\Device;
 use Illuminate\Http\Request;
 use App\Http\Resources\DeviceResource;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DeviceController extends Controller
 {
@@ -85,6 +87,23 @@ class DeviceController extends Controller
         return back()->with('delete', 'Device has been deleted!');
     }
 
+
+    public function verify(Request $request, Device $device)
+    {
+        $device->verified_at = Carbon::now();
+        $device->verified_from = Auth::user()->id;
+        $device->save();
+        return redirect('/devices')->with('success', 'Device has been verified!');
+
+    }
+
+    public function unverify(Request $request, Device $device)
+    {
+        $device->verified_at = null;
+        $device->verified_from = null;
+        $device->save();
+        return redirect('/devices')->with('success', 'Device has been unverified!');
+    }
 
 
 

@@ -41,7 +41,8 @@ Route::middleware('auth', 'role:viewer|deviceadmin|superadmin')->group(function 
 });
 
 Route::middleware('auth', 'role:deviceadmin|superadmin')->group(function () {
-    // Route::resource('/devices', DeviceController::class)->only('index');
+    Route::get('/devices/verify/{device}', [DeviceController::class, 'verify'])->name('devices.verify');
+    Route::get('/devices/unverify/{device}', [DeviceController::class, 'unverify'])->name('devices.unverify');
 });
 
 

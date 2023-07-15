@@ -224,6 +224,23 @@ const deleteDevice = (device) => {
     _token: props.csrf_token
   });
 };
+
+
+const verifyDevice = (device) => {
+  if (!confirm('Are you sure want to verify the device?')) return;
+  router.get(route('devices.verify', device.id), {
+    _token: props.csrf_token
+  });
+};
+
+const unverifyDevice = (device) => {
+  if (!confirm('Are you sure want to unverify the device?')) return;
+  router.get(route('devices.unverify', device.id), {
+    _token: props.csrf_token
+  });
+};
+
+
 </script>
 
 
