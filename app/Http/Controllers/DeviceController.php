@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LogEntryCreated;
 use App\Http\Requests\DeviceRegisterRequest;
 use App\Http\Requests\LogEntryRequest;
 use App\Models\LogEntry;
@@ -104,6 +105,8 @@ class DeviceController extends Controller
 
 
         $logentry=$device->logEntries()->create($validatedData);
+        event(new LogEntryCreated($logentry));
+
         $response = [
             'success' => true,
             'data' => [

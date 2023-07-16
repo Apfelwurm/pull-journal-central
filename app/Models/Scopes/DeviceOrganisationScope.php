@@ -14,8 +14,16 @@ class DeviceOrganisationScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        if (Auth::hasUser() && (Auth::user()->isDeviceAdmin() || Auth::user()->isViewer() )) {
-            $builder->where('organisation_id', '=', Auth::user()->organisation->id);
+        if (Auth::hasUser() && (get_class(Auth::user()) == "App\Models\Device")){
+            $builder->where('id', '=', Auth::user()->id);
         }
+        else{
+
+            if (Auth::hasUser() && (Auth::user()->isDeviceAdmin() || Auth::user()->isViewer() )) {
+                $builder->where('organisation_id', '=', Auth::user()->organisation->id);
+            }
+
+        }
+
     }
 }
