@@ -9,8 +9,7 @@
                 </p>
                 <inertia-link href="devices/create">
                     <a
-                        class="px-4 py-2 mr-3 text-sm text-green-600 transition border border-green-300 rounded-full hover:bg-green-600 hover:text-white hover:border-transparent">Create
-                        device</a>
+                        class="px-4 py-2 mr-3 text-sm text-green-600 transition border border-green-300 rounded-full hover:bg-green-600 hover:text-white hover:border-transparent">Register device</a>
                 </inertia-link>
 
             </h2>
@@ -63,6 +62,10 @@
                                 <th scope="col"
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                     Log count
+                                </th>                                
+                                <th scope="col"
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                    Not acknowledged Log count
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
@@ -116,6 +119,16 @@
                                     <span
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-purple-800 bg-purple-200 rounded-full">
                                         {{ device.logcount }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                    <span v-if="device.notaknowledgedlogcount == 0"
+                                        class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-200 rounded-full">
+                                        {{ device.notaknowledgedlogcount }}
+                                    </span>
+                                    <span v-else
+                                        class="inline-flex px-2 text-xs font-semibold leading-5 text-red-800 bg-red-200 rounded-full">
+                                        {{ device.notaknowledgedlogcount }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-center whitespace-nowrap">

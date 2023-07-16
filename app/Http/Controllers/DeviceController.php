@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeviceRegisterRequest;
+use App\Http\Requests\LogEntryRequest;
+use App\Models\LogEntry;
+use App\Models\Organisation;
 use Inertia\Inertia;
 use App\Models\Device;
 use Illuminate\Http\Request;
@@ -35,21 +39,55 @@ class DeviceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    // public function create()
-    // {
-    //     return Inertia::render('Devices/Create');
-    // }
+    public function create()
+    {
+        return Inertia::render('Devices/Create',[
+            'organisation' => Auth::user()->organisation,
+            'url' => config('app.url'),
+        ]);
+    }
 
-    /**
-     * Store a newly created resource in storage.
+     /**
+     * register a new device.
      */
-    // public function store(DeviceStoreRequest $request)
-    // {
-    //     $validatedData = $request->validated();
-    //     Device::create($validatedData);
+    public function register(DeviceRegisterRequest $request, Organisation $organisation)
+    {
+        $validatedData = $request->validated();
 
-    //     return redirect()->route('devices.index')->with('success', 'Device has been created!');
-    // }
+        if ($validatedData["organisationpassword"] != $organisation->registrationpassword)
+        {
+            $message = "organisationpassword not matching";
+            $response = [
+                'message' => "organisationpassword not matching",
+                'errors' => [
+                    'organisationpassword' => [
+                        $message,
+                    ],
+                ],
+            ];
+
+
+            return response()->json($response, 422);
+        }
+
+        $device = Device::create($validatedData);
+        $device->organisation()->associate($organisation) ;
+        $device->save();
+        $token = $device->createToken('Inittoken')->plainTextToken;
+
+        event(new DeviceCreated($device));
+
+
+        $response = [
+            'success' => true,
+            'token'    => $token,
+            'message' => "registered successfully",
+        ];
+
+
+        return response()->json($response, 200);
+    }
+
 
     /**
      * Display the specified resource.
@@ -57,6 +95,23 @@ class DeviceController extends Controller
     public function show(string $id)
     {
         //
+    }
+
+    public function createlog (LogEntryRequest $request)
+    {
+        $validatedData = $request->validated();
+        $device = Auth::user();
+
+
+        $logentry=$device->logEntries()->create($validatedData);
+        $response = [
+            'success' => true,
+            'data' => [
+                "log_id" => $logentry->id,
+            ],
+        ];
+
+        return response()->json($response, 200);
     }
 
     /**

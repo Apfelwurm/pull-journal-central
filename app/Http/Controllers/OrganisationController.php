@@ -7,6 +7,7 @@ use App\Http\Resources\OrganisationResource;
 use App\Models\Organisation;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 use App\Events\OrganisationCreated;
 use App\Events\OrganisationRemoved;
 use App\Events\OrganisationUpdated;
@@ -44,6 +45,8 @@ class OrganisationController extends Controller
         $validatedData = $request->validated();
         $organisation = Organisation::create($validatedData);
 
+        $organisation->registrationpassword = Str::random(16);
+        $organisation->save();
         event(new OrganisationCreated($organisation));
 
         return redirect()->route('organisations.index')->with('success', 'Organisation has been created!');

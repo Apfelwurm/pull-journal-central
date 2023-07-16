@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 
 class Device extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -28,10 +30,7 @@ class Device extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
@@ -41,7 +40,6 @@ class Device extends Authenticatable
     protected $casts = [
         'verified_at' => 'datetime',
         'last_api_call' => 'datetime',
-        // 'verified_from' => User::class,
     ];
 
     protected static function booted(): void
@@ -57,5 +55,10 @@ class Device extends Authenticatable
     public function verifiedfrom()
     {
         return $this->belongsTo(User::class, 'verified_from', 'id');
+    }
+
+    public function logEntries(): HasMany
+    {
+        return $this->hasMany(LogEntry::class);
     }
 }

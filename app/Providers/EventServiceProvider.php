@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\LogEntryCreated;
+use App\Listeners\SendLogEntryCreatedNotification;
 use Illuminate\Auth\Events\Registered;
 use App\Events\DeviceCreated;
 use App\Events\DeviceRemoved;
@@ -59,6 +61,9 @@ class EventServiceProvider extends ServiceProvider
         OrganisationUpdated::class => [
             SendOrganisationUpdatedNotification::class,
         ],
+        LogEntryCreated::class => [
+            SendLogEntryCreatedNotification::class,
+        ]
     ];
 
     /**

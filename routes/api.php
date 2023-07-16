@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DeviceController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/devices/register/{organisation}', [DeviceController::class, 'register'])->name('devices.register');
+
+Route::middleware('auth:sanctum', 'verifieddevice')->
+post("/devices/createlog", [DeviceController::class, 'createlog'])->
+name('devices.createlog');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
