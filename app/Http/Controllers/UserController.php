@@ -57,6 +57,7 @@ class UserController extends Controller
         $user = User::create($validatedData);
         $user->organisation()->associate(Organisation::find($validatedData['organisation_id'])) ;
         $user->save();
+        $user->notificationSetting()->create();
 
         return redirect()->route('users.index')->with('success', 'User has been created!');
     }

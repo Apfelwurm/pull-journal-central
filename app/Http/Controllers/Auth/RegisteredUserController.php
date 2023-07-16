@@ -50,6 +50,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        $user->notificationSetting()->create();
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
