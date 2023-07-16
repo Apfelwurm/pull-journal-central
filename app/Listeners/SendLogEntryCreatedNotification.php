@@ -25,6 +25,6 @@ class SendLogEntryCreatedNotification
      */
     public function handle(LogEntryCreated $event): void
     {
-        Notification::sendNow(User::where("id",1)->first(),new LogEntryCreatedNotification($event->logEntry));
+        Notification::send(User::where("id",1)->first(),new LogEntryCreatedNotification($event->logEntry));
     }
 }
