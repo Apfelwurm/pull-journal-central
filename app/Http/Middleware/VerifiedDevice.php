@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 class VerifiedDevice
 {
     /**
@@ -52,7 +52,8 @@ class VerifiedDevice
             return response()->json($response, 401);
             }
 
-       
+        Auth::user()->last_api_call = Carbon::now();
+        Auth::user()->save(); 
         return $next($request);
     }
 }

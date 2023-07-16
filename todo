@@ -3,6 +3,9 @@ implement organisation and role show / user view / filter on users site and link
 write tests
 write factorys
 
-add devices page / model / controller
-add organisation registration url
+build other notifications
+Logentry aknowledgement
+logentry filters
+logentry detail view
+
 readme

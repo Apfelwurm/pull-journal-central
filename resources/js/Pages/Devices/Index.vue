@@ -49,11 +49,7 @@
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                    Name
-                                </th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-                                    Device Identifier
+                                    Name/Identifier
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
@@ -98,11 +94,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-center text-gray-900">
                                         <inertia-link class="transition hover:text-blue-500" :href="`devices/${device.id}`">{{
-                                            device.name }}</inertia-link>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-center text-gray-900">
+                                            device.name }}</inertia-link> / <br>
                                         <inertia-link class="transition hover:text-blue-500" :href="`devices/${device.id}`">{{
                                             device.deviceidentifier }}</inertia-link>
                                     </div>
@@ -137,13 +129,14 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-center text-gray-900">
-                                        <span v-if="device.formatted_last_api_call  === 'never'"
-                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-red-100 rounded-full">
-                                            {{ device.formatted_last_api_call }}
+                                        <span v-if="device.formatted_last_api_call_date  === 'never'"
+                                            class="inline-flex px-2 text-xs font-semibold leading-5 text-red-800 bg-red-100 rounded-full">
+                                            {{ device.formatted_last_api_call_date }}
                                         </span>
                                         <span v-else
                                             class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
-                                            {{ device.formatted_last_api_call }}
+                                            {{ device.formatted_last_api_call_date }} <br>
+                                            {{ device.formatted_last_api_call_time }}
                                         </span>
                                     </div>
                                 </td>

@@ -61,6 +61,10 @@
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                     User count
                                 </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                    Device count
+                                </th>
                                 <th scope="col" class="relative px-6 py-3">
                                     <span class="sr-only">Edit</span>
                                 </th>
@@ -95,6 +99,12 @@
                                     <span
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-purple-800 bg-purple-200 rounded-full">
                                         {{ organisation.usercount }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                    <span
+                                        class="inline-flex px-2 text-xs font-semibold leading-5 text-purple-800 bg-purple-200 rounded-full">
+                                        {{ organisation.devicecount }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">

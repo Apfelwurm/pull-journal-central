@@ -17,6 +17,11 @@ class Organisation extends Model
         return $this->hasMany(User::class);
     }
 
+    public function devices(): HasMany
+    {
+        return $this->hasMany(Device::class);
+    }
+
     public function superAdmins(): HasMany
     {
         return $this->hasMany(User::class)->where('role', UserRoleEnum::SUPERADMIN);

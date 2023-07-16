@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\LogEntryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrganisationController;
@@ -38,6 +39,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth', 'role:viewer|deviceadmin|superadmin')->group(function () {
     Route::resource('/devices', DeviceController::class)->only('index');
+    Route::resource('/logEntries', LogEntryController::class)->only('index');
 });
 
 Route::middleware('auth', 'role:deviceadmin|superadmin')->group(function () {

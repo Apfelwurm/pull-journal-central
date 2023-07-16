@@ -98,24 +98,6 @@ class DeviceController extends Controller
         //
     }
 
-    public function createlog (LogEntryRequest $request)
-    {
-        $validatedData = $request->validated();
-        $device = Auth::user();
-
-
-        $logentry=$device->logEntries()->create($validatedData);
-        event(new LogEntryCreated($logentry));
-
-        $response = [
-            'success' => true,
-            'data' => [
-                "log_id" => $logentry->id,
-            ],
-        ];
-
-        return response()->json($response, 200);
-    }
 
     /**
      * Show the form for editing the specified resource.

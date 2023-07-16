@@ -24,7 +24,8 @@ class DeviceResource extends JsonResource
             'notaknowledgedlogcount' => $this->logEntries()->whereNull("aknowledged_at")->count(),
             'formatted_created_at' => isset($this->created_at) ? $this->created_at->format('d M Y') : "not available",
             'formatted_verified_at' => isset($this->verified_at) ? $this->verified_at->format('d M Y') : "not verified",
-            'formatted_last_api_call' => isset($this->last_api_call) ? $this->last_api_call->format('d M Y') : "never",
+            'formatted_last_api_call_date' => isset($this->last_api_call) ? $this->last_api_call->format('d M Y') : "never",
+            'formatted_last_api_call_time' => isset($this->last_api_call) ? $this->last_api_call->format('H:i:s') : "",
         ];
     }
 }

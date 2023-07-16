@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LogEntryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeviceController;
@@ -19,8 +20,8 @@ use App\Http\Controllers\DeviceController;
 Route::get('/devices/register/{organisation}', [DeviceController::class, 'register'])->name('devices.register');
 
 Route::middleware('auth:sanctum', 'verifieddevice')->
-post("/devices/createlog", [DeviceController::class, 'createlog'])->
-name('devices.createlog');
+post("/logEntries/create", [LogEntryController::class, 'create'])->
+name('logEntries.createlog');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

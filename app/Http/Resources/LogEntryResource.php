@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrganisationResource extends JsonResource
+class LogEntryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,12 @@ class OrganisationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'usercount' => $this->users()->count(),
-            'devicecount' => $this->devices()->count(),
+            'source' => $this->source,
+            'class' => $this->class,
+            'device' => $this->device,
+            'content' => $this->content,
+            'aknowledged_from' => $this->aknowledged_from,
+            'formatted_aknowledged_at' => isset($this->aknowledged_at) ? $this->aknowledged_at->format('d M Y') : "not aknowledged",
             'formatted_created_at' => $this->created_at->format('d M Y'),
         ];
     }
