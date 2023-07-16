@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Str;
 
 class NotificationSettingController extends Controller
 {
@@ -20,6 +19,7 @@ class NotificationSettingController extends Controller
             'enable_provider_mail' => ['required', 'boolean'],
             'enable_provider_ntfy' => ['required', 'boolean'],
             'enable_log_entry_created_notification' => ['required', 'boolean'],
+            'ntfy_channel_id' => ['required_unless:enable_provider_ntfy,false', 'string', 'nullable'],
         ]);
 
         $request->user()->notificationSetting()->update([
@@ -27,8 +27,10 @@ class NotificationSettingController extends Controller
             'enable_provider_mail' => $validated['enable_provider_mail'],
             'enable_provider_ntfy' => $validated['enable_provider_ntfy'],
             'enable_log_entry_created_notification' => $validated['enable_log_entry_created_notification'],
+            'ntfy_channel_id' => $validated['ntfy_channel_id'],
         ]);
 
         return back();
     }
+
 }

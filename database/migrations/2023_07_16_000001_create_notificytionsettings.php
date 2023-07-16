@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('enable_provider_mail')->default(false);
             $table->boolean('enable_provider_ntfy')->default(false);
             $table->boolean('enable_log_entry_created_notification')->default(false);
-            $table->string('ntfy_channel_id')->default("");
+            $table->string('ntfy_channel_id')->nullable();
             $table->timestamps();
         });
     }

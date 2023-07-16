@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Enums\UserRoleEnum;
 use App\Events\LogEntryCreated;
 use App\Notifications\LogEntryCreatedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,6 +26,10 @@ class SendLogEntryCreatedNotification
      */
     public function handle(LogEntryCreated $event): void
     {
-        Notification::send(User::where("id",1)->first(),new LogEntryCreatedNotification($event->logEntry));
+        $superadmins = User::where("role", UserRoleEnum::SUPERADMIN)->get();
+        $organisationusers = $event->logEntry->device->organisation->notificationUsers;
+
+        $mergedusers = $superadmins->merge($organisationusers);
+        Notification::send($mergedusers,new LogEntryCreatedNotification($event->logEntry));
     }
 }

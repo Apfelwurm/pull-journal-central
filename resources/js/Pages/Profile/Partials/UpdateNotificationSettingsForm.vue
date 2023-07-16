@@ -4,22 +4,23 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const EnableNotificationsInput = ref(null);
 const EnableProvicerMailInput = ref(null);
 const EnableProvicerNtfyInput = ref(null);
 const EnableLogEntryCreatedNotificationInput = ref(null);
+const ntfyChannelIdInput = ref(null);
 
 const notificationSettings = usePage().props.auth.user.notification_setting;
-
 
 const form = useForm({
     enable_notifications: notificationSettings.enable_notifications,
     enable_provider_mail: notificationSettings.enable_provider_mail,
     enable_provider_ntfy: notificationSettings.enable_provider_ntfy,
     enable_log_entry_created_notification: notificationSettings.enable_log_entry_created_notification,
+    ntfy_channel_id : notificationSettings.ntfy_channel_id,
 });
 
 
@@ -44,9 +45,19 @@ const updateNotificationSettings = () => {
                 form.reset('enable_log_entry_created_notification');
                 EnableLogEntryCreatedNotificationInput.value.focus();
             }
+            if (form.errors.ntfy_channel_id) {
+                form.reset('ntfy_channel_id');
+                ntfyChannelIdInput.value.focus();
+            }
         },
     });
 };
+
+const generateNtfyChannelId = () => {
+    form.ntfy_channel_id = Math.random().toString(36).slice(2);
+};
+    
+
 </script>
 
 <template>
@@ -86,7 +97,7 @@ const updateNotificationSettings = () => {
                 </div>
                     
 
-                <div class="container m-auto grid grid-cols-3 gap-6">
+                <div class="container m-auto grid grid-cols-2 gap-6">
                     <div class="">
                         <InputLabel for="enable_provider_ntfy" value="Enable Ntfy" />
 
@@ -110,24 +121,11 @@ const updateNotificationSettings = () => {
                             type="text"
                             class="mt-1"
                         />
-
-                        <InputError :message="form.errors.enable_provider_ntfy" class="mt-2" />
+                        <PrimaryButton @click="generateNtfyChannelId()" type="button" title="generate Ntfy Channel Id (you have to save afterwards!)">generate </PrimaryButton>
+                        <InputError :message="form.errors.ntfy_channel_id" class="mt-2" />
                         
                     </div>
-                    <div class="">
-                        <InputLabel for="ntfy_channel_id" value="Ntfy Channel ID" />
-
-                        <TextInput
-                            id="ntfy_channel_id"
-                            ref="ntfyChannelIdInput"
-                            v-model="form.ntfy_channel_id"
-                            type="text"
-                            class="mt-1"
-                        />
-
-                        <InputError :message="form.errors.enable_provider_ntfy" class="mt-2" />
-                        
-                    </div>
+                    
                 </div>
 
 
