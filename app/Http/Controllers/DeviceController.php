@@ -31,7 +31,8 @@ class DeviceController extends Controller
 
         return Inertia::render('Devices/Index', [
             'devices' => DeviceResource::collection(Device::when($term, function ($query, $term) {
-                $query->where('name', 'LIKE', '%' . $term . '%');
+                $query->where('name', 'LIKE', '%' . $term . '%')
+                ->orwhere('deviceidentifier', 'LIKE', '%' . $term . '%');
             })->latest()
             ->paginate(5)),
         ]);

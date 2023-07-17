@@ -48,4 +48,9 @@ class LogEntry extends Model
     {
         return $this->belongsTo(User::class, 'aknowledged_from', 'id');
     }
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
 }

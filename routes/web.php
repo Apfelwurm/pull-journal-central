@@ -25,9 +25,7 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'canRegister' => Route::has('register')
     ]);
 });
 
@@ -45,6 +43,9 @@ Route::middleware('auth', 'role:viewer|deviceadmin|superadmin')->group(function 
 Route::middleware('auth', 'role:deviceadmin|superadmin')->group(function () {
     Route::get('/devices/verify/{device}', [DeviceController::class, 'verify'])->name('devices.verify');
     Route::get('/devices/unverify/{device}', [DeviceController::class, 'unverify'])->name('devices.unverify');
+    Route::get('/logEntries/aknowledge/{logEntry}', [LogEntryController::class, 'aknowledge'])->name('logEntries.aknowledge');
+    Route::get('/logEntries/unaknowledge/{logEntry}', [LogEntryController::class, 'unaknowledge'])
+                ->name('logEntries.unaknowledge');
 });
 
 

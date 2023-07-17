@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LogEntryAknowledged;
 use App\Events\LogEntryCreated;
+use App\Events\LogEntryUnaknowledged;
+use App\Filters\LogEntryFilters;
 use App\Http\Requests\DeviceRegisterRequest;
 use App\Http\Requests\LogEntryRequest;
 use App\Http\Resources\LogEntryResource;
@@ -27,13 +30,12 @@ class LogEntryController extends Controller
      */
     public function index(Request $request)
     {
+        $filters = $request->input('filters');
 
-        $term = $request->input('term');
+        $filterfilter = new LogEntryFilters();
 
         return Inertia::render('LogEntries/Index', [
-            'logEntries' => LogEntryResource::collection(LogEntry::when($term, function ($query, $term) {
-                $query->where('source', 'LIKE', '%' . $term . '%');
-            })->latest()
+            'logEntries' => LogEntryResource::collection(LogEntry::filter($request)->latest()
             ->paginate(25)),
         ]);
     }
@@ -68,24 +70,24 @@ class LogEntryController extends Controller
 
 
 
-    public function aknowledge(Request $request, Device $device)
+    public function aknowledge(Request $request, LogEntry $logEntry)
     {
-        // $device->verified_at = Carbon::now();
-        // $device->verified_from = Auth::user()->id;
-        // $device->save();
-        // event(new DeviceVerified($device));
+        $logEntry->aknowledged_at = Carbon::now();
+        $logEntry->aknowledged_from = Auth::user()->id;
+        $logEntry->save();
+        event(new LogEntryAknowledged($logEntry));
 
-        // return redirect('/devices')->with('success', 'Device has been verified!');
+        return redirect('/logEntries')->with('success', 'Entry has been aknowledged!');
 
     }
 
-    public function unaknowledge(Request $request, Device $device)
+    public function unaknowledge(Request $request, LogEntry $logEntry)
     {
-        // $device->verified_at = null;
-        // $device->verified_from = null;
-        // $device->save();
-        // event(new DeviceUnverified($device));
-        // return redirect('/devices')->with('success', 'Device has been unverified!');
+        $logEntry->aknowledged_at = null;
+        $logEntry->aknowledged_from = null;
+        $logEntry->save();
+        event(new LogEntryUnaknowledged($logEntry));
+        return redirect('/logEntries')->with('success', 'Entry has been unaknowledged!');
     }
 
 
