@@ -77,7 +77,7 @@ class LogEntryController extends Controller
         $logEntry->save();
         event(new LogEntryAcknowledged($logEntry));
 
-        return redirect('/logEntries')->with('success', 'Entry has been acknowledged!');
+        return back()->with('success', 'Entry has been acknowledged!');
 
     }
 
@@ -87,7 +87,7 @@ class LogEntryController extends Controller
         $logEntry->acknowledged_from = null;
         $logEntry->save();
         event(new LogEntryUnacknowledged($logEntry));
-        return redirect('/logEntries')->with('success', 'Entry has been unacknowledged!');
+        return back()->with('success', 'Entry has been unacknowledged!');
     }
 
 

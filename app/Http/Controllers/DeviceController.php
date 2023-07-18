@@ -149,7 +149,7 @@ class DeviceController extends Controller
         $device->save();
         event(new DeviceVerified($device));
 
-        return redirect('/devices')->with('success', 'Device has been verified!');
+        return back()->with('success', 'Device has been verified!');
 
     }
 
@@ -159,7 +159,7 @@ class DeviceController extends Controller
         $device->verified_from = null;
         $device->save();
         event(new DeviceUnverified($device));
-        return redirect('/devices')->with('success', 'Device has been unverified!');
+        return back()->with('success', 'Device has been unverified!');
     }
 
 

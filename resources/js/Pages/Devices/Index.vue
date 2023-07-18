@@ -93,9 +93,9 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-center text-gray-900">
-                                        <inertia-link class="transition hover:text-blue-500" :href="`devices/${device.id}`">{{
+                                        <inertia-link class="transition hover:text-blue-500" :href="`/logEntries?filters[device]=${device.id}`">{{
                                             device.name }}</inertia-link> / <br>
-                                        <inertia-link class="transition hover:text-blue-500" :href="`devices/${device.id}`">{{
+                                        <inertia-link class="transition hover:text-blue-500" :href="`/logEntries?filters[device]=${device.id}`">{{
                                             device.deviceidentifier }}</inertia-link>
                                     </div>
                                 </td>
@@ -108,12 +108,13 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                    <span
+                                    <inertia-link class="transition hover:text-blue-500" :href="`/logEntries?filters[device]=${device.id}`"><span
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-purple-800 bg-purple-200 rounded-full">
                                         {{ device.logcount }}
-                                    </span>
+                                    </span></inertia-link>
                                 </td>
                                 <td class="px-6 py-4 text-center whitespace-nowrap">
+                                    <inertia-link class="transition hover:text-blue-500" :href="`/logEntries?filters[device]=${device.id}&filters[notacknowledged]=true`">
                                     <span v-if="device.notacknowledgedlogcount == 0"
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-200 rounded-full">
                                         {{ device.notacknowledgedlogcount }}
@@ -122,6 +123,7 @@
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-red-800 bg-red-200 rounded-full">
                                         {{ device.notacknowledgedlogcount }}
                                     </span>
+                                    </inertia-link>
                                 </td>
                                 <td class="px-6 py-4 text-center whitespace-nowrap">
                                     <inertia-link class="transition hover:text-blue-500" :href="`organisations/${device.organisation.id}`">{{
