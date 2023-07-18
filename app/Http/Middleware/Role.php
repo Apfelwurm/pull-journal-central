@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\UserRoleEnum;
 
@@ -19,35 +18,42 @@ class Role
      */
     public function handle(Request $request, Closure $next, $roles)
     {
+        if (Auth::check()) {
+            $validRoles = explode("|", $roles);
 
-
-        if (Auth::check() ){
-            $roles = explode("|", $roles);
-            $valid = false;
-            foreach ($roles as $role) {
-
-                if ($role === UserRoleEnum::SUPERADMIN->value && Auth::user()->isSuperAdmin())
-                {
-                        $valid = true;
+            foreach ($validRoles as $role) {
+                if ($this->isUserInRole($role)) {
+                    return $next($request);
                 }
-
-                if ($role === UserRoleEnum::DEVICEADMIN->value && Auth::user()->isDeviceAdmin())
-                {
-                        $valid = true;
-                }
-
-                if ($role === UserRoleEnum::VIEWER->value && Auth::user()->isViewer())
-                {
-                        $valid = true;
-                }
-
-            }
-            if ($valid)
-            {
-                return $next($request);
             }
         }
 
         return redirect('/');
+    }
+
+    /**
+     * Check if the authenticated user is in the given role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    private function isUserInRole(string $role): bool
+    {
+        $user = Auth::user();
+        $return = false;
+
+        if ($role === UserRoleEnum::SUPERADMIN->value && $user->isSuperAdmin()) {
+            $return = true;
+        }
+
+        if ($role === UserRoleEnum::DEVICEADMIN->value && $user->isDeviceAdmin()) {
+            $return = true;
+        }
+
+        if ($role === UserRoleEnum::VIEWER->value && $user->isViewer()) {
+            $return = true;
+        }
+
+        return $return;
     }
 }

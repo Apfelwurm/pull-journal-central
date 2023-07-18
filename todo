@@ -1,10 +1,9 @@
 look into except on routes
-implement organisation and role show / user view / filter on users site and link the organisation links
+implement organisation and role show / user view / filter on users site and link the organisation links (like in the log view)
 write tests
 write factorys
 
 build other notifications
-logentry filters
 logentry detail view
 
 readme
