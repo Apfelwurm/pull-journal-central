@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Filters\LogEntryFilter;
+use App\Models\Scopes\OrganisationLogEntryScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +42,11 @@ class LogEntry extends Model
         'acknowledged_at' => 'datetime',
         'class' => LogEntryClassEnum::class,
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new OrganisationLogEntryScope);
+    }
 
     public function device()
     {

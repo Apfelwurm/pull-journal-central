@@ -7,7 +7,7 @@
                     Devices
                     <i class="fa-solid fa-user-gear"></i>
                 </p>
-                <inertia-link href="devices/create">
+                <inertia-link href="devices/create" v-if="$page.props.auth.isDeviceAdmin || $page.props.auth.isSuperAdmin" >
                     <a
                         class="px-4 py-2 mr-3 text-sm text-green-600 transition border border-green-300 rounded-full hover:bg-green-600 hover:text-white hover:border-transparent">Register device</a>
                 </inertia-link>
@@ -75,7 +75,7 @@
                                     class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                     Verification
                                 </th>
-                                <th scope="col" class="relative px-6 py-3">
+                                <th v-if="$page.props.auth.isDeviceAdmin || $page.props.auth.isSuperAdmin" scope="col" class="relative px-6 py-3">
                                     <span class="sr-only">Edit</span>
                                 </th>
                             </tr>
@@ -157,7 +157,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                <td v-if="$page.props.auth.isDeviceAdmin || $page.props.auth.isSuperAdmin" class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
 
                                     <inertia-link title="Edit Device" :href="`/devices/${device.id}/edit`"
                                         class="float-left px-4 py-2 text-green-400 duration-100 rounded hover:text-green-600">

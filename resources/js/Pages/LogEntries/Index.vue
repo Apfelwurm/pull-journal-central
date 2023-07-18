@@ -193,7 +193,7 @@ watch(filters, debounce(() => {
 									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
 									Created at
 								</th>
-								<th scope="col" class="relative px-6 py-3">
+								<th v-if="$page.props.auth.isDeviceAdmin || $page.props.auth.isSuperAdmin" scope="col" class="relative px-6 py-3">
 									<span class="sr-only">Edit</span>
 								</th>
 							</tr>
@@ -262,7 +262,7 @@ watch(filters, debounce(() => {
 										{{ logEntry.formatted_created_at }}
 									</span>
 								</td>
-								<td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+								<td v-if="$page.props.auth.isDeviceAdmin || $page.props.auth.isSuperAdmin" class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
 
 									<div v-if="logEntry.formatted_acknowledged_at  === 'not acknowledged'">
                                     <a title="Aknowledge entry" @click="aknowledgeLogEntry(logEntry)"
