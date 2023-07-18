@@ -4,11 +4,13 @@
 import { reactive, ref, watch, computed } from 'vue';
 import { router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue';
+import Checkbox from '@/Components/Checkbox.vue';
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
 import debounce from 'lodash.debounce'
 
 const props = defineProps({
   logEntries: Object,
+  filters: Object,
 });
 
 const aknowledgeLogEntry = (logEntry) => {
@@ -28,14 +30,20 @@ const unaknowledgeLogEntry = (logEntry) => {
 
 
 
-const filter_id = ref('')
-const filter_source = ref('')
-const filter_class = ref('')
+const filter_id = ref(props.filters?.id)
+const filter_source = ref(props.filters?.source)
+const filter_class = ref(props.filters?.class)
+const filter_device = ref(props.filters?.device)
+const filter_aknowledged = ref(props.filters?.aknowledged)
+const filter_not_aknowledged = ref(props.filters?.not_aknowledged)
 
 const filters = reactive({
   id: filter_id,
   source: filter_source,
   class: filter_class,
+  device: filter_device,
+  aknowledged: filter_aknowledged,
+  not_aknowledged: filter_not_aknowledged,
 });
 
 
@@ -69,9 +77,23 @@ const selectId = (logEntry) => {
 	filter_id.value = logEntry.id.toString()
 }
 
+
+const checkAknowledged = () => {
+
+	if (filter_not_aknowledged.value == true) {
+		filter_not_aknowledged.value = false
+  	}
+}
+
+const checkNotAknowledged = () => {
+
+if (filter_aknowledged.value == true) {
+	filter_aknowledged.value = false
+  }
+
+}
+
 watch(filters, debounce(() => {
-	console.log("hallo")
-	console.log(filters)
 	router.get(route('logEntries.index'), {filters: filters}, {preserveState: true, preserveScroll: true, only: ['logEntries']})
 }, 300));
 
@@ -105,11 +127,15 @@ watch(filters, debounce(() => {
 						</div>
 					</div>
 					<table class="min-w-full divide-y divide-gray-200">
-                        <caption style="display: none;">Log listing</caption>
+                        <caption style="display: none;">Filters</caption>
 						<thead class="bg-gray-50">
 							<tr>
+								<th scope="col" class="relative px-6 py-3">
+									<span>Filters</span><br>
+									<div class="text-xs font-small">Wildcard: %</div>
+								</th>
 								<th scope="col"
-									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+									class="px-4 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
 									<input
 									type="text"
 									id="filter_id"
@@ -119,11 +145,16 @@ watch(filters, debounce(() => {
 									
 								</th>
 								<th scope="col"
-									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-									Device
+									class="px-4 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+									<input
+									type="text"
+									id="filter_device"
+									placeholder="Device..."
+									v-model="filter_device"
+									>
 								</th>
 								<th scope="col"
-									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+									class="px-4 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
 									<input
 									type="text"
 									id="filter_source"
@@ -132,20 +163,36 @@ watch(filters, debounce(() => {
 									>
 								</th>
 								<th scope="col"
-									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-									Class
+									class="px-4 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+									<input
+									type="text"
+									id="filter_class"
+									placeholder="class..."
+									v-model="filter_class"
+									>
 								</th>
                                 <th scope="col"
-									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-									Aknowledged
+									class="px-3 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+									Akn <br><Checkbox
+										id="filter_aknowledged"
+										v-model:checked="filter_aknowledged"
+										title="only Aknowledged"
+										@click="checkAknowledged()"
+									/>
+									
 								</th>
-								<th scope="col"
-									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-									Created at
+								
+                                <th scope="col"
+									class="px-3 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+									NAkn <br><Checkbox
+										id="filter_not_aknowledged"
+										v-model:checked="filter_not_aknowledged"
+										title="not Aknowledged"
+										@click="checkNotAknowledged()"
+									/>
+									
 								</th>
-								<th scope="col" class="relative px-6 py-3">
-									<span class="sr-only">Edit</span>
-								</th>
+								
 							</tr>
 						</thead>
 					</table>
