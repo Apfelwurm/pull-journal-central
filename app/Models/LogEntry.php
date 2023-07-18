@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Enums\LogEntryClassEnum;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class LogEntry extends Model
 {
@@ -52,6 +53,7 @@ class LogEntry extends Model
     {
         return $this->belongsTo(Device::class);
     }
+
     public function acknowledgedfrom()
     {
         return $this->belongsTo(User::class, 'acknowledged_from', 'id');

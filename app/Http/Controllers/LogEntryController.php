@@ -44,10 +44,13 @@ class LogEntryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+
+     public function show(string $id)
+     {
+         $logEntry = LogEntryResource::make(LogEntry::with(["device","acknowledgedfrom", "device.organisation"])->findOrFail($id));
+ 
+         return Inertia::render('LogEntries/Show', compact('logEntry'));
+     }
 
     public function create (LogEntryRequest $request)
     {

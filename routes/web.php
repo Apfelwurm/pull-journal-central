@@ -37,7 +37,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth', 'role:viewer|deviceadmin|superadmin')->group(function () {
     Route::resource('/devices', DeviceController::class)->only('index');
-    Route::resource('/logEntries', LogEntryController::class)->only('index');
+    Route::resource('/logEntries', LogEntryController::class)->only(['index', 'show']);
 });
 
 Route::middleware('auth', 'role:deviceadmin|superadmin')->group(function () {
