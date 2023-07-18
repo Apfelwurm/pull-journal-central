@@ -31,37 +31,10 @@ class LogEntryController extends Controller
     public function index(Request $request)
     {
         $filters = $request->input('filters');
-        $query = LogEntry::query();
-
-        if (isset($filters))
-        {
-            if (isset($filters["id"]) && $filters["id"] != "") {
-                $query->where('id', 'like',$filters["id"]);
-            }
-            if (isset($filters["source"]) && $filters["source"] != "") {
-                $query->where('source', 'like',$filters["source"]);
-            }
-            if (isset($filters["class"]) && $filters["class"] != "") {
-                $query->where('class', 'like',$filters["class"]);
-            }
-            if (isset($filters["aknowledged"]) && $filters["aknowledged"] != "" && $filters["aknowledged"] == "true" ) {
-                $query->whereNotNull('aknowledged_at');
-            }
-            if (isset($filters["not_aknowledged"]) && $filters["not_aknowledged"] != "" && $filters["not_aknowledged"] == "true" ) {
-                $query->whereNull('aknowledged_at');
-            }
-            if (isset($filters["device"]) && $filters["device"] != "") {
-                $query->where(function ($query) use ($filters) {
-                    $query->whereRelation('device', 'name', 'like', $filters["device"])
-                          ->orWhereRelation('device', 'deviceidentifier', 'like', $filters["device"])
-                          ->orWhereRelation('device', 'id', '=', $filters["device"]);
-                });
-            }
-           
-        }
+        
 
         return Inertia::render('LogEntries/Index', [
-            'logEntries' => LogEntryResource::collection($query->latest()
+            'logEntries' => LogEntryResource::collection(LogEntry::filter($filters)->latest()
             ->paginate(25)),
             'filters' => $filters,
         ]);

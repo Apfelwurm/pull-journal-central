@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Filters\LogEntryFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -47,5 +49,22 @@ class LogEntry extends Model
     public function aknowledgedfrom()
     {
         return $this->belongsTo(User::class, 'aknowledged_from', 'id');
+    }
+
+    public function scopeFilter(Builder $query, array $filters = null)
+    {
+        if (isset($filters))
+        {
+            $logEntryFilter = new LogEntryFilter();
+
+            foreach ($filters as $filter => $value) {
+                if (method_exists($logEntryFilter, $filter)) {
+                    $query = $logEntryFilter->$filter($query, $value);
+                }
+            }
+            
+        }
+        
+        return $query;
     }
 }

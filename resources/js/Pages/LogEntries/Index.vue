@@ -35,7 +35,7 @@ const filter_source = ref(props.filters?.source)
 const filter_class = ref(props.filters?.class)
 const filter_device = ref(props.filters?.device)
 const filter_aknowledged = ref(props.filters?.aknowledged)
-const filter_not_aknowledged = ref(props.filters?.not_aknowledged)
+const filter_notaknowledged = ref(props.filters?.notaknowledged)
 
 const filters = reactive({
   id: filter_id,
@@ -43,7 +43,7 @@ const filters = reactive({
   class: filter_class,
   device: filter_device,
   aknowledged: filter_aknowledged,
-  not_aknowledged: filter_not_aknowledged,
+  notaknowledged: filter_notaknowledged,
 });
 
 
@@ -80,8 +80,8 @@ const selectId = (logEntry) => {
 
 const checkAknowledged = () => {
 
-	if (filter_not_aknowledged.value == true) {
-		filter_not_aknowledged.value = false
+	if (filter_notaknowledged.value == true) {
+		filter_notaknowledged.value = false
   	}
 }
 
@@ -185,8 +185,8 @@ watch(filters, debounce(() => {
                                 <th scope="col"
 									class="px-3 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
 									NAkn <br><Checkbox
-										id="filter_not_aknowledged"
-										v-model:checked="filter_not_aknowledged"
+										id="filter_notaknowledged"
+										v-model:checked="filter_notaknowledged"
 										title="not Aknowledged"
 										@click="checkNotAknowledged()"
 									/>
