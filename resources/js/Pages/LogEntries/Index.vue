@@ -46,48 +46,16 @@ const filters = reactive({
   notacknowledged: filter_notacknowledged,
 });
 
-
-const searchIds = computed(() => {
-  if (filter_id.value === '') {
-    return []
-  }
-
-  let matches = 0
-
-  return props.logEntries.data.filter(logEntry => {
-	if (
-		logEntry.id.toString().toLowerCase() == filter_id.value.toLowerCase()
-    ) {
-      return logEntry
-    }
-
-    if (
-		logEntry.id.toString().toLowerCase().includes(filter_id.value.toLowerCase())
-      && matches < 10
-    ) {
-      matches++
-      return logEntry
-    }
-
-  })
-});
-
-const selectId = (logEntry) => {
-	
-	filter_id.value = logEntry.id.toString()
-}
-
-
 const checkAcknowledged = () => {
 
-	if (filter_notacknowledged.value == true) {
+	if (filter_notacknowledged.value) {
 		filter_notacknowledged.value = false
   	}
 }
 
 const checkNotAcknowledged = () => {
 
-if (filter_acknowledged.value == true) {
+if (filter_acknowledged.value) {
 	filter_acknowledged.value = false
   }
 

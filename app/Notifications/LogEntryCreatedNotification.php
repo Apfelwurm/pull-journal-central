@@ -35,7 +35,7 @@ class LogEntryCreatedNotification extends Notification
             $notifiable->notificationSetting->enable_provider_ntfy &&
             $notifiable->notificationSetting->enable_log_entry_created_notification)
         {
-            array_push($array, NtfyChannel::class); ;
+            array_push($array, NtfyChannel::class);
         }
 
         if ($notifiable->notificationSetting->enable_notifications &&

@@ -41,9 +41,8 @@
 </template>
 
 <script setup>
-import Button from '@/Components/Button.vue';
 import AppLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { useForm, Link } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
 
 
 const props = defineProps({

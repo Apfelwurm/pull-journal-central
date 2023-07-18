@@ -53,7 +53,7 @@ class VerifiedDevice
             }
 
         Auth::user()->last_api_call = Carbon::now();
-        Auth::user()->save(); 
+        Auth::user()->save();
         return $next($request);
     }
 }
