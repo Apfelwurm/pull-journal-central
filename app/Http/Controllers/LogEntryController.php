@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\LogEntryAknowledged;
+use App\Events\LogEntryAcknowledged;
 use App\Events\LogEntryCreated;
-use App\Events\LogEntryUnaknowledged;
+use App\Events\LogEntryUnacknowledged;
 use App\Filters\LogEntryFilters;
 use App\Http\Requests\DeviceRegisterRequest;
 use App\Http\Requests\LogEntryRequest;
@@ -72,22 +72,22 @@ class LogEntryController extends Controller
 
     public function aknowledge(Request $request, LogEntry $logEntry)
     {
-        $logEntry->aknowledged_at = Carbon::now();
-        $logEntry->aknowledged_from = Auth::user()->id;
+        $logEntry->acknowledged_at = Carbon::now();
+        $logEntry->acknowledged_from = Auth::user()->id;
         $logEntry->save();
-        event(new LogEntryAknowledged($logEntry));
+        event(new LogEntryAcknowledged($logEntry));
 
-        return redirect('/logEntries')->with('success', 'Entry has been aknowledged!');
+        return redirect('/logEntries')->with('success', 'Entry has been acknowledged!');
 
     }
 
     public function unaknowledge(Request $request, LogEntry $logEntry)
     {
-        $logEntry->aknowledged_at = null;
-        $logEntry->aknowledged_from = null;
+        $logEntry->acknowledged_at = null;
+        $logEntry->acknowledged_from = null;
         $logEntry->save();
-        event(new LogEntryUnaknowledged($logEntry));
-        return redirect('/logEntries')->with('success', 'Entry has been unaknowledged!');
+        event(new LogEntryUnacknowledged($logEntry));
+        return redirect('/logEntries')->with('success', 'Entry has been unacknowledged!');
     }
 
 

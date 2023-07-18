@@ -4,15 +4,15 @@ namespace App\Listeners;
 
 use App\Enums\UserRoleEnum;
 use App\Events\LogEntryCreated;
-use App\Events\LogEntryUnaknowledged;
-use App\Notifications\LogEntryAknowledgedNotification;
+use App\Events\LogEntryUnacknowledged;
+use App\Notifications\LogEntryAcknowledgedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 
 
-class SendLogEntryUnaknowledgedNotification
+class SendLogEntryUnacknowledgedNotification
 {
     /**
      * Create the event listener.
@@ -25,7 +25,7 @@ class SendLogEntryUnaknowledgedNotification
     /**
      * Handle the event.
      */
-    public function handle(LogEntryUnaknowledged $event): void
+    public function handle(LogEntryUnacknowledged $event): void
     {
 
     }

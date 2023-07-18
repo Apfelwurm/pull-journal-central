@@ -34,16 +34,16 @@ const filter_id = ref(props.filters?.id)
 const filter_source = ref(props.filters?.source)
 const filter_class = ref(props.filters?.class)
 const filter_device = ref(props.filters?.device)
-const filter_aknowledged = ref(props.filters?.aknowledged)
-const filter_notaknowledged = ref(props.filters?.notaknowledged)
+const filter_acknowledged = ref(props.filters?.acknowledged)
+const filter_notacknowledged = ref(props.filters?.notacknowledged)
 
 const filters = reactive({
   id: filter_id,
   source: filter_source,
   class: filter_class,
   device: filter_device,
-  aknowledged: filter_aknowledged,
-  notaknowledged: filter_notaknowledged,
+  acknowledged: filter_acknowledged,
+  notacknowledged: filter_notacknowledged,
 });
 
 
@@ -78,17 +78,17 @@ const selectId = (logEntry) => {
 }
 
 
-const checkAknowledged = () => {
+const checkAcknowledged = () => {
 
-	if (filter_notaknowledged.value == true) {
-		filter_notaknowledged.value = false
+	if (filter_notacknowledged.value == true) {
+		filter_notacknowledged.value = false
   	}
 }
 
-const checkNotAknowledged = () => {
+const checkNotAcknowledged = () => {
 
-if (filter_aknowledged.value == true) {
-	filter_aknowledged.value = false
+if (filter_acknowledged.value == true) {
+	filter_acknowledged.value = false
   }
 
 }
@@ -174,10 +174,10 @@ watch(filters, debounce(() => {
                                 <th scope="col"
 									class="px-3 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
 									Akn <br><Checkbox
-										id="filter_aknowledged"
-										v-model:checked="filter_aknowledged"
-										title="only Aknowledged"
-										@click="checkAknowledged()"
+										id="filter_acknowledged"
+										v-model:checked="filter_acknowledged"
+										title="only Acknowledged"
+										@click="checkAcknowledged()"
 									/>
 									
 								</th>
@@ -185,10 +185,10 @@ watch(filters, debounce(() => {
                                 <th scope="col"
 									class="px-3 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
 									NAkn <br><Checkbox
-										id="filter_notaknowledged"
-										v-model:checked="filter_notaknowledged"
-										title="not Aknowledged"
-										@click="checkNotAknowledged()"
+										id="filter_notacknowledged"
+										v-model:checked="filter_notacknowledged"
+										title="not Acknowledged"
+										@click="checkNotAcknowledged()"
 									/>
 									
 								</th>
@@ -219,7 +219,7 @@ watch(filters, debounce(() => {
 								</th>
                                 <th scope="col"
 									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
-									Aknowledged
+									Acknowledged
 								</th>
 								<th scope="col"
 									class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
@@ -274,17 +274,17 @@ watch(filters, debounce(() => {
 
 								</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-										<span v-if="logEntry.formatted_aknowledged_at  === 'not aknowledged'"
+										<span v-if="logEntry.formatted_acknowledged_at  === 'not acknowledged'"
                                             class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-red-100 rounded-full">
-                                            {{ logEntry.formatted_aknowledged_at }}
+                                            {{ logEntry.formatted_acknowledged_at }}
                                         </span>
                                         <div v-else>
                                         <span 
                                             class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
-                                            <div>{{ logEntry.formatted_aknowledged_at }}</div>
+                                            <div>{{ logEntry.formatted_acknowledged_at }}</div>
                                         </span>
-                                            <div>by: <inertia-link class="transition hover:text-blue-500" :href="`users/${logEntry.aknowledgedfrom.id}`">{{
-                                            logEntry.aknowledgedfrom.name }}</inertia-link></div>
+                                            <div>by: <inertia-link class="transition hover:text-blue-500" :href="`users/${logEntry.acknowledgedfrom.id}`">{{
+                                            logEntry.acknowledgedfrom.name }}</inertia-link></div>
 
                                         </div>
 								</td>
@@ -296,7 +296,7 @@ watch(filters, debounce(() => {
 								</td>
 								<td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
 
-									<div v-if="logEntry.formatted_aknowledged_at  === 'not aknowledged'">
+									<div v-if="logEntry.formatted_acknowledged_at  === 'not acknowledged'">
                                     <a title="Aknowledge entry" @click="aknowledgeLogEntry(logEntry)"
                                         class="float-left px-4 py-2 ml-2 text-green-400 duration-100 rounded hover:text-green-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="green" stroke="currentColor" viewBox="0 0 448 512"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>

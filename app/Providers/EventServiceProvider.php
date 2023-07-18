@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Events\LogEntryAknowledged;
+use App\Events\LogEntryAcknowledged;
 use App\Events\LogEntryCreated;
-use App\Events\LogEntryUnaknowledged;
-use App\Listeners\SendLogEntryAknowledgedNotification;
+use App\Events\LogEntryUnacknowledged;
+use App\Listeners\SendLogEntryAcknowledgedNotification;
 use App\Listeners\SendLogEntryCreatedNotification;
-use App\Listeners\SendLogEntryUnaknowledgedNotification;
+use App\Listeners\SendLogEntryUnacknowledgedNotification;
 use Illuminate\Auth\Events\Registered;
 use App\Events\DeviceCreated;
 use App\Events\DeviceRemoved;
@@ -68,11 +68,11 @@ class EventServiceProvider extends ServiceProvider
         LogEntryCreated::class => [
             SendLogEntryCreatedNotification::class,
         ],
-        LogEntryAknowledged::class => [
-            SendLogEntryAknowledgedNotification::class,
+        LogEntryAcknowledged::class => [
+            SendLogEntryAcknowledgedNotification::class,
         ],
-        LogEntryUnaknowledged::class => [
-            SendLogEntryUnaknowledgedNotification::class,
+        LogEntryUnacknowledged::class => [
+            SendLogEntryUnacknowledgedNotification::class,
         ]
     ];
 

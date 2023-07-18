@@ -38,7 +38,7 @@ class LogEntry extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'aknowledged_at' => 'datetime',
+        'acknowledged_at' => 'datetime',
         'class' => LogEntryClassEnum::class,
     ];
 
@@ -46,9 +46,9 @@ class LogEntry extends Model
     {
         return $this->belongsTo(Device::class);
     }
-    public function aknowledgedfrom()
+    public function acknowledgedfrom()
     {
-        return $this->belongsTo(User::class, 'aknowledged_from', 'id');
+        return $this->belongsTo(User::class, 'acknowledged_from', 'id');
     }
 
     public function scopeFilter(Builder $query, array $filters = null)

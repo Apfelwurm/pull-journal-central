@@ -19,8 +19,8 @@ return new class extends Migration
             /** end ENUM */
             $table->foreignId('device_id')->default(1)->constrained()->onDelete('cascade');
             $table->longText('content');
-            $table->timestamp('aknowledged_at')->nullable();
-            $table->foreignId('aknowledged_from')->nullable()->default(null)->constrained('users')->nullOnDelete();
+            $table->timestamp('acknowledged_at')->nullable();
+            $table->foreignId('acknowledged_from')->nullable()->default(null)->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

@@ -33,19 +33,19 @@ class LogEntryFilter
         return $query;
     }
 
-    public function aknowledged(Builder $query, $acknowledged)
+    public function acknowledged(Builder $query, $acknowledged)
     {
         if ($acknowledged == 'true') {
-            return $query->whereNotNull('aknowledged_at');
+            return $query->whereNotNull('acknowledged_at');
         }
 
         return $query;
     }
     
-    public function notaknowledged(Builder $query, $notacknowledged)
+    public function notacknowledged(Builder $query, $notacknowledged)
     {
             if ($notacknowledged == 'true') {
-            return $query->whereNull('aknowledged_at');
+            return $query->whereNull('acknowledged_at');
         }
 
         return $query;

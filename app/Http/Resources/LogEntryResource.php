@@ -20,8 +20,8 @@ class LogEntryResource extends JsonResource
             'class' => $this->class,
             'device' => $this->device,
             'content' => $this->content,
-            'aknowledgedfrom' => $this->aknowledgedfrom,
-            'formatted_aknowledged_at' => isset($this->aknowledged_at) ? $this->aknowledged_at->format('d M Y') : "not aknowledged",
+            'acknowledgedfrom' => $this->acknowledgedfrom,
+            'formatted_acknowledged_at' => isset($this->acknowledged_at) ? $this->acknowledged_at->format('d M Y') : "not acknowledged",
             'formatted_created_at' => $this->created_at->format('d M Y'),
         ];
     }

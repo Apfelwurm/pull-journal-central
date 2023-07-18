@@ -114,13 +114,13 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                    <span v-if="device.notaknowledgedlogcount == 0"
+                                    <span v-if="device.notacknowledgedlogcount == 0"
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-200 rounded-full">
-                                        {{ device.notaknowledgedlogcount }}
+                                        {{ device.notacknowledgedlogcount }}
                                     </span>
                                     <span v-else
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-red-800 bg-red-200 rounded-full">
-                                        {{ device.notaknowledgedlogcount }}
+                                        {{ device.notacknowledgedlogcount }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-center whitespace-nowrap">
