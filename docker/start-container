@@ -9,6 +9,8 @@ fi
 name=$(getent passwd "$UUID")
 name=${name%%:*}
 
+echo "detected name $name"
+
 echo "set storage and cache permissions..."
 chmod -R ug+rwx /var/www/html/storage
 
