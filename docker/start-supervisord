@@ -2,11 +2,11 @@
 sleep 10
 echo "run migration as $USERNAME"
 sed -i "s|%REPLACETIMEZONE%|$PHP_Timezone|g" /etc/php8/conf.d/99-pull-journal-central.ini
-su - $USERNAME -c "echo 'printenv \n' && printenv && cd /var/www/html/ && php artisan migrate --force --no-interaction"
+su $USERNAME -c "php artisan migrate --force --no-interaction"
 
 	if [ ! -f /var/www/html/storage/.initialseed ]; then
-        su - $USERNAME -c "cd /var/www/html/ && php artisan db:seed --force --no-interaction"
-        su - $USERNAME -c "touch /var/www/html/storage/.initialseed"
+        su $USERNAME -c "php artisan db:seed --force --no-interaction"
+        su $USERNAME -c "touch /var/www/html/storage/.initialseed"
     fi
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
