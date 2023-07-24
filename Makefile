@@ -183,7 +183,7 @@ npm-build-prd:
 	--network host \
 	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
 	-w /usr/src/app \
-	node:latest /bin/bash -ci "npm build"
+	node:latest /bin/bash -ci "npm run build"
 
 npm-run-prd-deattached:
 	docker run --rm -d --name js-run-prd --interactive \

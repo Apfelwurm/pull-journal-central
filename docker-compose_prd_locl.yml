@@ -4,7 +4,7 @@ services:
     pull-journal-central:
         build:
             context: .
-            dockerfile: ./docker_prd/Dockerfile
+            dockerfile: ./docker/Dockerfile
         image: 'apfelwurm/pull-journal-central:latest'
         ports:
             - '${NGINX_PORT}:8080'

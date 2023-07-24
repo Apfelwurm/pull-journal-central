@@ -15,7 +15,7 @@ RUN mkdir /workdir && chown node:node /workdir
 USER node
 WORKDIR /workdir
 COPY --chown=node . /workdir
-RUN npm install --no-audit && npm build
+RUN npm install --no-audit && npm run build
 
 # Build pull-journal-central
 
@@ -35,12 +35,12 @@ ENV SOURCE_COMMIT=$SOURCE_COMMIT
 ARG BUILDNODE
 ENV BUILDNODE=$BUILDNODE
 
-COPY docker_prd/fpm-pool.conf /etc/php8/php-fpm.d/www.conf
-COPY --chown=nobody docker_prd/php.ini /etc/php8/conf.d/99-pull-journal-central.ini
-COPY docker_prd/start-container /usr/local/bin/start-container
-COPY docker_prd/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY docker_prd/wait-for.sh /usr/local/bin/wait-for.sh
-COPY docker_prd/start-supervisord /usr/local/bin/start-supervisord
+COPY docker/fpm-pool.conf /etc/php8/php-fpm.d/www.conf
+COPY --chown=nobody docker/php.ini /etc/php8/conf.d/99-pull-journal-central.ini
+COPY docker/start-container /usr/local/bin/start-container
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/wait-for.sh /usr/local/bin/wait-for.sh
+COPY docker/start-supervisord /usr/local/bin/start-supervisord
 
 RUN chmod +x /usr/local/bin/start-container
 RUN chmod +x /usr/local/bin/wait-for.sh
@@ -54,7 +54,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && \
 RUN apk --no-cache add nginx supervisor curl tzdata dcron bash
 
 RUN rm /etc/nginx/http.d/default.conf
-COPY docker_prd/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
