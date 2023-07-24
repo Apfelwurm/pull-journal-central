@@ -15,7 +15,9 @@ RUN mkdir /workdir && chown node:node /workdir
 USER node
 WORKDIR /workdir
 COPY --chown=node . /workdir
-RUN npm install --no-audit && npm run build
+RUN npm install --no-audit 
+RUN ls -la
+RUN npm run build
 
 # Build pull-journal-central
 
