@@ -43,7 +43,7 @@ ENV BUILDNODE=$BUILDNODE
 RUN set -x ; \
   deluser www-data ; \
   addgroup -g ${GUID} -S www-data ; \
-  adduser -u ${UUID} -D -S -G www-data www-data && exit 0 ; exit 1
+  adduser -u ${UUID} -D -G www-data www-data && exit 0 ; exit 1
 
 COPY docker/fpm-pool.conf /etc/php8/php-fpm.d/www.conf
 COPY --chown=${UUID}:${GUID} docker/php.ini /etc/php8/conf.d/99-pull-journal-central.ini
