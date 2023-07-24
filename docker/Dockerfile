@@ -72,9 +72,7 @@ COPY --chown=nobody . /var/www/html/
 RUN rm -rf /var/www/html/docker* && rm -rf /var/www/html/docs* 
 COPY --from=composerbuild --chown=nobody /workdir/vendor /var/www/html/vendor
 COPY --from=npmbuild --chown=nobody /workdir/node_modules /var/www/html/node_modules
-COPY --from=npmbuild --chown=nobody /workdir/public/css /var/www/html/public/css
-COPY --from=npmbuild --chown=nobody /workdir/public/js /var/www/html/public/js
-COPY --from=npmbuild --chown=nobody /workdir/public/mix-manifest.json /var/www/html/public/mix-manifest.json
+COPY --from=npmbuild --chown=nobody /workdir/public /var/www/html/public
 
 
 EXPOSE ${NGINX_PORT}
