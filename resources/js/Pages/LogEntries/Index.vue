@@ -1,7 +1,7 @@
 
 <script setup>
 
-import { reactive, ref, watch, computed } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue';
 import Checkbox from '@/Components/Checkbox.vue';

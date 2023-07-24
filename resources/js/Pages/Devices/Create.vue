@@ -12,15 +12,13 @@
                 <div class="w-full max-w-xs m-auto">
 
                     <div  class="px-8 pt-6 pb-8 m-auto mb-4 bg-white rounded shadow-md">
-
-                    <!-- TODO: add right text here -->
                     To register a new Device for your Organisation "{{ organisation.name }}" use the following data:
                     
                     Registration Link:
                     <div class="text-sm text-center text-gray-900">
                         <span
                             class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
-                            {{ url }}/devices/register/{{ organisation.id }}
+                            {{ url }}/api/devices/register/{{ organisation.id }}
                         </span>
                     </div>
 

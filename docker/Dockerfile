@@ -1,5 +1,5 @@
 # Composer prerequirements
-FROM composer:latest as composerbuild
+FROM composer:latest AS composerbuild
 
 RUN mkdir /workdir && chown nobody:nobody /workdir
 USER nobody
@@ -9,7 +9,7 @@ COPY --chown=nobody composer.lock /workdir
 RUN composer install --ignore-platform-reqs --no-scripts
 
 # npm prerequirements
-FROM node:latest as npmbuild
+FROM node:latest AS npmbuild
 
 RUN mkdir /workdir && chown node:node /workdir
 USER node
