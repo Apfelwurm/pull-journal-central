@@ -1,4 +1,5 @@
 <template>
+    {{ getUser }}
     <AppLayout title="User profile">
         <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div class="w-full max-w-lg overflow-hidden bg-white rounded-lg shadow-lg">
@@ -14,6 +15,24 @@
                         <p class="mt-2 text-gray-600">Role: {{ getUser.role }}</p>
                         <p class="mt-2 text-gray-600">Organisataion: {{ getUser.organisation.name }}</p>
 
+                    </div>
+                    <hr class="my-4">
+                    <div class="my-2">
+                        <h2 class="text-sm font-bold text-gray-600 uppercase">Verified Devices</h2>
+                        <p v-if="!getUser.verified_devices.length" class="mt-2 text-gray-600">No Devices</p>
+                        <div v-for="device in getUser.verified_devices">
+                           
+                        
+                        <p class="mt-2 text-gray-600">
+                            
+                            <inertia-link class="transition hover:text-blue-500" :href="`/logEntries?filters[device]=${device.id}`">
+                                {{device.name}}/{{device.deviceidentifier}}
+                            </inertia-link>
+
+                        
+                        </p>
+
+                        </div>
                     </div>
                 </div>
             </div>

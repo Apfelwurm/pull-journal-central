@@ -53,10 +53,9 @@ class User extends Authenticatable
         return $this->belongsTo(Organisation::class);
     }
 
-//TODO: ref key fix
-    public function verified_devices(): HasMany
+    public function verifiedDevices(): HasMany
     {
-        return $this->hasMany(Device::class);
+        return $this->hasMany(Device::class, 'verified_from', 'id');
     }
 
     public function notificationSetting(): HasOne
