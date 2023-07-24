@@ -6,15 +6,19 @@ if [[ $(stat -c "%u" /var/www/html/storage) != $UUID ]]; then
     chown -R $UUID:$GUID /var/www/html/storage
 fi
 
-name=$(getent passwd "$UUID")
-name=${name%%:*}
-
-echo "detected name $name"
+USERNAME=$(getent passwd "$UUID")
+export USERNAME=${USERNAME%%:*}
+echo "---------------"
+echo "detected name $USERNAME"
 
 echo "set storage and cache permissions..."
 chmod -R ug+rwx /var/www/html/storage
 
+echo "---------------"
+echo "replacing users in configs"
+sed -i "s|%%USERNAME%%|$USERNAME|g" /etc/supervisor/conf.d/supervisord.conf
+
 # Database Wait check
 echo "---------------"
 echo "WAITING FOR $DB_HOST:$DB_PORT..."
-su - $name -c "wait-for.sh $DB_HOST:$DB_PORT --timeout=30 --strict -- start-supervisord"
+wait-for.sh $DB_HOST:$DB_PORT --timeout=30 --strict -- start-supervisord
