@@ -6,11 +6,7 @@ services:
         ports:
             - '${NGINX_PORT}:8080'
         env_file: .env
-        environment:
-            DB_HOST: '${DB_HOST}'
-            DB_PORT: '${DB_PORT}'
-            TZ: '${SYS_TIMEZONE}'
-            PHP_Timezone: '${PHP_Timezone}'
+        user: "${UUID}:${GUID}"
         volumes:
             - 'pull-journal-central_storage:/var/www/html/storage'
         networks:

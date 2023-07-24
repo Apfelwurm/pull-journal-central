@@ -16,7 +16,7 @@ USER node
 WORKDIR /workdir
 COPY --chown=node . /workdir
 COPY --from=composerbuild --chown=nobody /workdir/vendor  /workdir/vendor
-RUN npm install --no-audit 
+RUN npm install --no-audit
 RUN ls -la
 RUN npm run build
 
@@ -29,6 +29,8 @@ ENV PHP_Timezone="Europe/Berlin"
 ENV TZ="Europe/Berlin"
 
 #versioning
+ENV UUID 82
+ENV GUID 82
 ARG BUILDNUMBER
 ENV BUILDNUMBER=$BUILDNUMBER
 ARG BUILDID
@@ -39,7 +41,7 @@ ARG BUILDNODE
 ENV BUILDNODE=$BUILDNODE
 
 COPY docker/fpm-pool.conf /etc/php8/php-fpm.d/www.conf
-COPY --chown=nobody docker/php.ini /etc/php8/conf.d/99-pull-journal-central.ini
+COPY --chown=${UUID}:${GUID} docker/php.ini /etc/php8/conf.d/99-pull-journal-central.ini
 COPY docker/start-container /usr/local/bin/start-container
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/wait-for.sh /usr/local/bin/wait-for.sh
@@ -64,18 +66,18 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Set working directory
 WORKDIR /var/www/html
 
-RUN chown -R nobody.nobody /var/www/html && \
-  chown -R nobody.nobody /run && \
-  chown -R nobody.nobody /var/lib/nginx && \
-  chown -R nobody.nobody /var/log/nginx
+RUN chown -R ${UUID}:${GUID} /var/www/html && \
+  chown -R ${UUID}:${GUID} /run && \
+  chown -R ${UUID}:${GUID} /var/lib/nginx && \
+  chown -R ${UUID}:${GUID} /var/log/nginx
 
-USER nobody
+USER ${UUID}:${GUID}
 WORKDIR /var/www/html
-COPY --chown=nobody . /var/www/html/
-RUN rm -rf /var/www/html/docker* && rm -rf /var/www/html/docs* 
-COPY --from=composerbuild --chown=nobody /workdir/vendor /var/www/html/vendor
-COPY --from=npmbuild --chown=nobody /workdir/node_modules /var/www/html/node_modules
-COPY --from=npmbuild --chown=nobody /workdir/public /var/www/html/public
+COPY --chown=${UUID}:${GUID} . /var/www/html/
+RUN rm -rf /var/www/html/docker* && rm -rf /var/www/html/docs*
+COPY --from=composerbuild --chown=${UUID}:${GUID} /workdir/vendor /var/www/html/vendor
+COPY --from=npmbuild --chown=${UUID}:${GUID} /workdir/node_modules /var/www/html/node_modules
+COPY --from=npmbuild --chown=${UUID}:${GUID} /workdir/public /var/www/html/public
 
 
 EXPOSE ${NGINX_PORT}
