@@ -109,7 +109,7 @@
                         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mt-16 ">Log Content</h2>
 
                         <div class="mt-8">
-                            {{ logEntry.data.content }}
+                            <pre style="white-space: pre-wrap; word-wrap: break-word;  font-family: inherit;">{{ logEntry.data.content }}</pre>
                         </div>
                         <div class="mt-8"></div>
                     </div>

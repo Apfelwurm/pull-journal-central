@@ -44,7 +44,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col"
-                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                    class="px-1 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                     ID
                                 </th>
                                 <th scope="col"
@@ -56,11 +56,11 @@
                                     Created at
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                    class="px-4 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                     Log count
                                 </th>                                
                                 <th scope="col"
-                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
+                                    class="px-4 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                     Not acknowledged Log count
                                 </th>
                                 <th scope="col"
@@ -82,7 +82,7 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="device in devices.data" :key="device.id">
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-1 py-4 whitespace-nowrap">
                                     <div class="flex items-center justify-center">
                                         <div>
                                             <div class="text-sm font-medium text-gray-900">
@@ -107,13 +107,13 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                <td class="px-4 py-4 text-center whitespace-nowrap">
                                     <inertia-link class="transition hover:text-blue-500" :href="`/logEntries?filters[device]=${device.id}`"><span
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-purple-800 bg-purple-200 rounded-full">
                                         {{ device.logcount }}
                                     </span></inertia-link>
                                 </td>
-                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                <td class="px-4 py-4 text-center whitespace-nowrap">
                                     <inertia-link class="transition hover:text-blue-500" :href="`/logEntries?filters[device]=${device.id}&filters[notacknowledged]=true`">
                                     <span v-if="device.notacknowledgedlogcount == 0"
                                         class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-200 rounded-full">

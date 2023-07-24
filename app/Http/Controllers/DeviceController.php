@@ -129,11 +129,7 @@ class DeviceController extends Controller
      */
     public function destroy(Device $device)
     {
-        if ($device->id == 1)
-        {
-            return back()->with('error', 'Default Device can not be deleted!');
-        }
-
+        
         $device->delete();
 
         event(new DeviceRemoved($device));
