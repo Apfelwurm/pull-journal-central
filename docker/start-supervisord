@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sed -i "s|%REPLACETIMEZONE%|$PHP_Timezone|g" /etc/php8/conf.d/99-consumonitor.ini
+sed -i "s|%REPLACETIMEZONE%|$PHP_Timezone|g" /etc/php8/conf.d/99-pull-journal-central.ini
 php /var/www/html/artisan migrate
 
 	if [ ! -f /var/www/html/storage/app/.initialseed ]; then
