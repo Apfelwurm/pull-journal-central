@@ -13,7 +13,7 @@ endif
 dev: env-file-dev composer-install npm-install use-dev-file cache-clear permissions key-generate sail-up-deattached npm-run-dev-deattached wait-mysql db-regenerate
 
 #pull up prd environment from scratch (please use make env-file-prd and edit your .env file, then run this!)
-prd-locl: composer-install npm-install use-prd-locl-file key-generate prd-up-locl
+prd-locl: composer-install npm-install npm-build-prd use-prd-locl-file key-generate prd-up-locl
 
 #pull up prd environment from scratch (please use make env-file-prd and edit your .env file, then run this!)
 prd: use-prd-file key-generate prd-up
@@ -177,6 +177,13 @@ npm-run-prd:
 
 npm-stop-prd:
 	docker stop js-run-prd || true
+
+npm-build-prd:
+	docker run --rm --name js-run-prd --interactive \
+	--network host \
+	-v $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))):/usr/src/app \
+	-w /usr/src/app \
+	node:latest /bin/bash -ci "npm build"
 
 npm-run-prd-deattached:
 	docker run --rm -d --name js-run-prd --interactive \

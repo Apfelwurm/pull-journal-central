@@ -1,0 +1,47 @@
+# For more information: https://laravel.com/docs/sail
+version: '3'
+services:
+    pull-journal-central:
+        image: 'apfelwurm/pull-journal-central:latest'
+        ports:
+            - '${NGINX_PORT}:8080'
+        env_file: .env
+        environment:
+            DB_HOST: '${DB_HOST}'
+            DB_PORT: '${DB_PORT}'
+            TZ: '${SYS_TIMEZONE}'
+            PHP_Timezone: '${PHP_Timezone}'
+        volumes:
+            - 'pull-journal-central_storage:/var/www/html/storage'
+        networks:
+            - pull-journal-central
+        depends_on:
+            - pull-journal-central_mysql
+    pull-journal-central_mysql:
+        image: 'mysql:latest'
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        env_file: .env
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+            TZ: '${SYS_TIMEZONE}'
+        volumes:
+            - 'pull-journal-central_mysql:/var/lib/mysql'
+        networks:
+            - pull-journal-central
+        healthcheck:
+          test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+          retries: 3
+          timeout: 5s
+networks:
+  pull-journal-central:
+        driver: bridge
+volumes:
+  pull-journal-central_mysql:
+        driver: local
+  pull-journal-central_storage:
+        driver: local
