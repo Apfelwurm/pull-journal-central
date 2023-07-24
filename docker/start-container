@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+[ ! -d "/var/www/html/storage/framework" ] && mkdir -p "/var/www/html/storage/framework"
+[ ! -d "/var/www/html/storage/cache" ] && mkdir -p "/var/www/html/storage/cache"
+[ ! -d "/var/www/html/storage/views" ] && mkdir -p "/var/www/html/storage/views"
+
+
 if [[ $(stat -c "%u" /var/www/html/storage) != $UUID ]]; then
 	echo "---------------"
     echo "Changing ownership of /var/www/html/storage to $UUID ..."
