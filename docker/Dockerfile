@@ -71,7 +71,7 @@ RUN chown -R ${UUID}:${GUID} /var/www/html && \
   chown -R ${UUID}:${GUID} /var/lib/nginx && \
   chown -R ${UUID}:${GUID} /var/log/nginx
 
-USER ${UUID}:${GUID}
+USER root
 WORKDIR /var/www/html
 COPY --chown=${UUID}:${GUID} . /var/www/html/
 RUN rm -rf /var/www/html/docker* && rm -rf /var/www/html/docs*

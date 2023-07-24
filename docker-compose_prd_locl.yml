@@ -6,7 +6,6 @@ services:
             context: .
             dockerfile: ./docker/Dockerfile
         image: 'apfelwurm/pull-journal-central:latest'
-        user: "${UUID}:${GUID}"
         ports:
             - '${NGINX_PORT}:8080'
         env_file: .env
