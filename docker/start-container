@@ -16,7 +16,10 @@ chmod -R ug+rwx /var/www/html/storage
 
 echo "---------------"
 echo "replacing users in configs"
+sed -i "s|user = .*|user = $UUID |g" /etc/php8/php-fpm.d/www.conf
+sed -i "s|group = .*|group = $GUID |g" /etc/php8/php-fpm.d/www.conf
 sed -i "s|%%USERNAME%%|$USERNAME|g" /etc/supervisor/conf.d/supervisord.conf
+sed -i "s|%%USERNAME%%|$USERNAME|g" /etc/nginx/nginx.conf
 
 # Database Wait check
 echo "---------------"
