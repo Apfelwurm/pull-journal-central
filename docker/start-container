@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
+[ ! -d "/var/www/html/storage/app" ] && mkdir -p "/var/www/html/storage/app"
 [ ! -d "/var/www/html/storage/framework" ] && mkdir -p "/var/www/html/storage/framework"
-[ ! -d "/var/www/html/storage/cache" ] && mkdir -p "/var/www/html/storage/cache"
-[ ! -d "/var/www/html/storage/views" ] && mkdir -p "/var/www/html/storage/views"
+[ ! -d "/var/www/html/storage/framework/sessions" ] && mkdir -p "/var/www/html/storage/framework/sessions"
+[ ! -d "/var/www/html/storage/framework/cache" ] && mkdir -p "/var/www/html/storage/framework/cache"
+[ ! -d "/var/www/html/storage/framework/views" ] && mkdir -p "/var/www/html/storage/framework/views"
 
 
 if [[ $(stat -c "%u" /var/www/html/storage) != $UUID ]]; then
