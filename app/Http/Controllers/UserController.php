@@ -57,6 +57,7 @@ class UserController extends Controller
         $user = User::create($validatedData);
         $user->organisation()->associate(Organisation::find($validatedData['organisation_id'])) ;
         $user->save();
+        $user->notificationSetting()->create();
 
         return redirect()->route('users.index')->with('success', 'User has been created!');
     }
@@ -66,7 +67,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $getUser = User::with('organisation')->findOrFail($id);
+        $getUser = User::with(['organisation', 'verifiedDevices'])->findOrFail($id);
 
         return Inertia::render('Users/Show', compact('getUser'));
     }

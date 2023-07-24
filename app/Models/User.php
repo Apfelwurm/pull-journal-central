@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\UserRoleEnum;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 class User extends Authenticatable
@@ -46,19 +48,29 @@ class User extends Authenticatable
         'role' => UserRoleEnum::class,
     ];
 
-    public function getFormattedCreatedAtAttribute(): string
-    {
-        return $this->created_at->format('d M Y');
-    }
-
     public function organisation()
     {
         return $this->belongsTo(Organisation::class);
     }
 
-    public function isAdmin(): bool
+    public function verifiedDevices(): HasMany
     {
-        return $this->role === UserRoleEnum::ADMIN;
+        return $this->hasMany(Device::class, 'verified_from', 'id');
+    }
+
+    public function notificationSetting(): HasOne
+    {
+        return $this->hasOne(NotificationSetting::class);
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === UserRoleEnum::SUPERADMIN;
+    }
+
+    public function isDeviceAdmin(): bool
+    {
+        return $this->role === UserRoleEnum::DEVICEADMIN;
     }
 
     public function isViewer(): bool

@@ -34,18 +34,18 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <!-- <NavLink v-if="$page.props.auth.isViewer || $page.props.auth.isAdmin" :href="route('devices.show')" :active="route().current('devices.show')">
+                                <NavLink v-if="$page.props.auth.isViewer || $page.props.auth.isDeviceAdmin || $page.props.auth.isSuperAdmin" :href="route('logEntries.index')" :active="route().current('logEntries.index')">
+                                    Logs
+                                </NavLink>
+                                <NavLink v-if="$page.props.auth.isViewer || $page.props.auth.isDeviceAdmin || $page.props.auth.isSuperAdmin" :href="route('devices.index')" :active="route().current('devices.index')">
                                     Devices
-                                </NavLink> -->
-                                <NavLink v-if="$page.props.auth.isAdmin" :href="route('users.index')" :active="route().current('users.index')">
+                                </NavLink>
+                                <NavLink v-if="$page.props.auth.isSuperAdmin" :href="route('users.index')" :active="route().current('users.index')">
                                     Users
                                 </NavLink>
-                                <NavLink v-if="$page.props.auth.isAdmin" :href="route('organisations.index')" :active="route().current('organisations.index')">
+                                <NavLink v-if="$page.props.auth.isSuperAdmin" :href="route('organisations.index')" :active="route().current('organisations.index')">
                                     Organisations
                                 </NavLink>
-                                <!-- <NavLink v-if="$page.props.auth.isViewer || $page.props.auth.isAdmin" :href="route('admin.devicemanagement.show')" :active="route().current('admin.devicemanagement.show')">
-                                    Devicemanagement
-                                </NavLink> -->
                             </div>
                         </div>
 

@@ -32,8 +32,9 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
-                'isAdmin' => !empty($request->user()) ? $request->user()->isAdmin() : 0,
+                'user' => !empty($request->user()) ? $request->user()->load(['notificationSetting']) : $request->user(),
+                'isSuperAdmin' => !empty($request->user()) ? $request->user()->isSuperAdmin() : 0,
+                'isDeviceAdmin' => !empty($request->user()) ? $request->user()->isDeviceAdmin() : 0,
                 'isViewer' => !empty($request->user()) ? $request->user()->isViewer() : 0,
             ],
             'flash' => [

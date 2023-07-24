@@ -6,7 +6,8 @@ enum UserRoleEnum:string
 {
     use WithLookups;
 
-    case ADMIN = 'admin';
+    case SUPERADMIN = 'superadmin';
+    case DEVICEADMIN = 'deviceadmin';
     case VIEWER = 'viewer';
     case GUEST = 'guest';
 }

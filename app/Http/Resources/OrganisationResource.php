@@ -18,6 +18,7 @@ class OrganisationResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'usercount' => $this->users()->count(),
+            'devicecount' => $this->devices()->count(),
             'formatted_created_at' => $this->created_at->format('d M Y'),
         ];
     }

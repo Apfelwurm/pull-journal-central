@@ -7,6 +7,10 @@ use App\Http\Resources\OrganisationResource;
 use App\Models\Organisation;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
+use App\Events\OrganisationCreated;
+use App\Events\OrganisationRemoved;
+use App\Events\OrganisationUpdated;
 
 class OrganisationController extends Controller
 {
@@ -39,7 +43,11 @@ class OrganisationController extends Controller
     public function store(OrganisationStoreRequest $request)
     {
         $validatedData = $request->validated();
-        Organisation::create($validatedData);
+        $organisation = Organisation::create($validatedData);
+
+        $organisation->registrationpassword = Str::random(16);
+        $organisation->save();
+        event(new OrganisationCreated($organisation));
 
         return redirect()->route('organisations.index')->with('success', 'Organisation has been created!');
     }
@@ -65,8 +73,13 @@ class OrganisationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Organisation::where('id', $id)->update($request->all());
-
+        $organisation = Organisation::where('id', $id)->first();
+        if (isset($organisation))
+        {
+            $organisation->update($request->all());
+            event(new OrganisationUpdated($organisation));
+        }
+        
         return redirect('/organisations')->with('success', 'Organisation has been updated!');
     }
 
@@ -81,6 +94,7 @@ class OrganisationController extends Controller
         }
 
         $organisation->delete();
+        event(new OrganisationRemoved($organisation));
 
         return back()->with('delete', 'Organisation has been deleted!');
     }
