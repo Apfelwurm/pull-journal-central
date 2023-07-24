@@ -1,49 +1,13 @@
 #!/usr/bin/env bash
 
-
-# handle user stuff
-echo "---------------"
-echo "Check if uid $UUID and $GUID exists..."
-if [ "$(getent group| grep $GUID| wc -l)" -gt "0" ] ; then
-	export GROUPNAME=$(getent group| grep $GUID | cut -d: -f1)
-	echo "GUID $GUID exists with name $GROUPNAME"
-else
-	echo "GUID $GUID does not exist, creating $GROUPNAME"
-	export GROUPNAME=pjc
-	addgroup -g $GUID $GROUPNAME
-fi
-
-if id -u "$UUID" >/dev/null 2>&1; then
-	export USERNAME=$(id -un "$UUID")
-    echo "user $UUID exists with username $USERNAME"
-else
- 	echo "user $UUID does not exists, create pjc"
-    adduser --disabled-password --uid $UUID --ingroup $GROUPNAME pjc
-	export USERNAME=$(id -un "$UUID")
-fi
-
-
-if [ "$(id -nGz $USERNAME | tr '\0' '\n' | grep '^'${GROUPNAME}'$' | wc -l)" -gt "0" ] ; then
-	echo "User $USERNAME is in group $GROUPNAME";
-else
-	echo "User $USERNAME is not in group $GROUPNAME , adding...";
-	addgroup $USERNAME $GROUPNAME
-fi
-
-
 if [[ $(stat -c "%u" /var/www/html/storage) != $UUID ]]; then
 	echo "---------------"
     echo "Changing ownership of /var/www/html/storage to $UUID ..."
     chown -R $UUID:$GUID /var/www/html/storage
 fi
 
-# set permissions
-echo "---------------"
-echo "set file permissions, this will take some time..."
-if [[ "$UUID" != "82" || "$GUID" != "82" ]]; then
-	echo "set src owner..."
-	find /var/www/html ! -user $USERNAME -print0 | xargs -0 -r chown $UUID:$GUID
-fi
+name=$(getent passwd "$UUID")
+name=${name%%:*}
 
 echo "set storage and cache permissions..."
 chmod -R ug+rwx /var/www/html/storage
@@ -51,4 +15,4 @@ chmod -R ug+rwx /var/www/html/storage
 # Database Wait check
 echo "---------------"
 echo "WAITING FOR $DB_HOST:$DB_PORT..."
-su - $(id -un $UUID) -c "wait-for.sh $DB_HOST:$DB_PORT --timeout=30 --strict -- start-supervisord"
+su - $name -c "wait-for.sh $DB_HOST:$DB_PORT --timeout=30 --strict -- start-supervisord"
