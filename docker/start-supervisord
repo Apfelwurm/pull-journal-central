@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+sleep 10
 sed -i "s|%REPLACETIMEZONE%|$PHP_Timezone|g" /etc/php8/conf.d/99-pull-journal-central.ini
 su - $USERNAME -c "php /var/www/html/artisan migrate --force --no-interaction"
 
