@@ -1,5 +1,4 @@
 <template>
-    {{ getUser }}
     <AppLayout title="User profile">
         <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div class="w-full max-w-lg overflow-hidden bg-white rounded-lg shadow-lg">
