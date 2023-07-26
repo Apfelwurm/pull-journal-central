@@ -46,6 +46,7 @@ Route::middleware('auth', 'role:viewer|deviceadmin|superadmin')->group(function 
 });
 
 Route::middleware('auth', 'role:deviceadmin|superadmin')->group(function () {
+    Route::resource('/devices', DeviceController::class)->only('create');
     Route::get('/devices/verify/{device}', [DeviceController::class, 'verify'])->name('devices.verify');
     Route::get('/devices/unverify/{device}', [DeviceController::class, 'unverify'])->name('devices.unverify');
     Route::get('/logEntries/aknowledge/{logEntry}', [LogEntryController::class, 'aknowledge'])->name('logEntries.aknowledge');
@@ -56,7 +57,7 @@ Route::middleware('auth', 'role:deviceadmin|superadmin')->group(function () {
 
 Route::middleware(['auth', 'role:superadmin'])->group(function () {
     Route::resource('/users', UserController::class)->except('show');
-    Route::resource('/devices', DeviceController::class)->except('index');
+    Route::resource('/devices', DeviceController::class)->except(['index','create']);
     Route::resource('/organisations', OrganisationController::class);
 });
 
