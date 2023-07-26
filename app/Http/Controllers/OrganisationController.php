@@ -45,7 +45,7 @@ class OrganisationController extends Controller
         $validatedData = $request->validated();
         $organisation = Organisation::create($validatedData);
 
-        $organisation->registrationpassword = Str::random(16);
+        $organisation->registrationpassword = Str::random(64);
         $organisation->save();
         event(new OrganisationCreated($organisation));
 

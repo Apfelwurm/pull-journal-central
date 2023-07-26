@@ -23,7 +23,7 @@ return new class extends Migration
 
         Organisation::insert([[
             'name' => 'Default Organisation',
-            'registrationpassword' => Str::random(16),
+            'registrationpassword' => Str::random(64),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()],
         ]);
