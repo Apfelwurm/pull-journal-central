@@ -129,6 +129,18 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink v-if="$page.props.auth.isViewer || $page.props.auth.isDeviceAdmin || $page.props.auth.isSuperAdmin" :href="route('logEntries.index')" :active="route().current('logEntries.index')">
+                            Logs
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink v-if="$page.props.auth.isViewer || $page.props.auth.isDeviceAdmin || $page.props.auth.isSuperAdmin" :href="route('devices.index')" :active="route().current('devices.index')">
+                            Devices
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink v-if="$page.props.auth.isSuperAdmin" :href="route('users.index')" :active="route().current('users.index')">
+                            Users
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink v-if="$page.props.auth.isSuperAdmin" :href="route('organisations.index')" :active="route().current('organisations.index')">
+                            Organisations
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
