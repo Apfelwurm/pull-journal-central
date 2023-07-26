@@ -26,7 +26,7 @@ const props = defineProps({
 
                     <div class="p-6 font-semibold text-gray-900">Versions</div>
                     <div class="mx-auto max-w-7xl px-6 lg:px-8 mb-8">
-                        <dl class="grid grid-cols-1 gap-x-2 gap-y-16 text-center lg:grid-cols-4">
+                        <dl class="grid grid-cols-1 gap-x-2 gap-y-16 text-center lg:grid-cols-1">
                             <div class="mx-auto flex max-w-xs flex-col gap-y-4">
                                 <dt class="text-base leading-7 text-gray-600">BUILDNUMBER</dt>
                                 <dd class="order-first font-semibold tracking-tight text-gray-900">{{ BUILDNUMBER }}</dd>
