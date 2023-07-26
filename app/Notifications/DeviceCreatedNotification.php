@@ -62,7 +62,7 @@ class DeviceCreatedNotification extends Notification
     public function toNtfy(mixed $notifiable): Message
     {
         $title = "New device registered with the name " . $this->device->name;
-        $body = "Hello " . $notifiable->name  .", a new Device with the name " . $this->device->name ." has registered. To verify the device, see". config('app.url') . "/devices/";
+        $body = "Hello " . $notifiable->name  .", a new Device with the name " . $this->device->name ." has registered. To verify the device, see: ". config('app.url') . "/devices/";
         $message = new Message();
         $message->topic($notifiable->notificationSetting->ntfy_channel_id);
         $message->title($title);
