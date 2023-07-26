@@ -1,7 +1,7 @@
 <template>
     <AppLayout title="User profile">
         <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <div class="w-full max-w-lg overflow-hidden bg-white rounded-lg shadow-lg">
+            <div class="w-full max-w-lg overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-lg">
                 <div class="p-4">
 
                     <h1 class="text-2xl font-bold text-center">{{ getUser.name }}</h1>

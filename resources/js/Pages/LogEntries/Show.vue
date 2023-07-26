@@ -1,7 +1,7 @@
 <template>
     <AppLayout title="User profile">
         <div class=" flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <div class="w-full overflow-hidden bg-white rounded-lg shadow-lg" style="max-width: 80rem;">
+            <div class="w-full overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-lg" style="max-width: 80rem;">
                 <div class="bg-white">
                     <div
                         class="mx-auto grid max-w-2xl grid-cols-1 items-center gap-x-8 gap-y-16 px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">

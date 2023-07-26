@@ -17,7 +17,7 @@
         <div class="py-12">
 
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
+                <div class="overflow-x-auto overflow-y-hidden bg-white shadow-xl sm:rounded-lg">
                     <div class="flex justify-end mt-3">
                         <div class="mb-3 xl:w-96">
                             <div class="relative flex items-stretch w-4/5 mb-3 input-group">
