@@ -41,12 +41,25 @@ class DeviceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return Inertia::render('Devices/Create',[
-            'organisation' => Auth::user()->organisation,
-            'url' => config('app.url'),
-        ]);
+        if ($request->user()->isSuperAdmin())
+        {
+            $params = [
+                'organisation' => Auth::user()->organisation,
+                'organisations' => Organisation::all(),
+                'url' => config('app.url'),
+            ];
+        }
+        else
+        {
+            $params = [
+                'organisation' => Auth::user()->organisation,
+                'url' => config('app.url'),
+            ];
+        }
+
+        return Inertia::render('Devices/Create',$params);
     }
 
      /**
