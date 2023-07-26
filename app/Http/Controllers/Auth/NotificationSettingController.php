@@ -19,6 +19,7 @@ class NotificationSettingController extends Controller
             'enable_provider_mail' => ['required', 'boolean'],
             'enable_provider_ntfy' => ['required', 'boolean'],
             'enable_log_entry_created_notification' => ['required', 'boolean'],
+            'enable_device_created_notification' => ['required', 'boolean'],
             'ntfy_channel_id' => ['required_unless:enable_provider_ntfy,false', 'string', 'nullable'],
         ]);
 
@@ -27,6 +28,7 @@ class NotificationSettingController extends Controller
             'enable_provider_mail' => $validated['enable_provider_mail'],
             'enable_provider_ntfy' => $validated['enable_provider_ntfy'],
             'enable_log_entry_created_notification' => $validated['enable_log_entry_created_notification'],
+            'enable_device_created_notification' => $validated['enable_device_created_notification'],
             'ntfy_channel_id' => $validated['ntfy_channel_id'],
         ]);
 

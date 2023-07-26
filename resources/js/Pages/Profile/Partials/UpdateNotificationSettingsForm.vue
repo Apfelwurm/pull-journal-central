@@ -11,6 +11,7 @@ const EnableNotificationsInput = ref(null);
 const EnableProvicerMailInput = ref(null);
 const EnableProvicerNtfyInput = ref(null);
 const EnableLogEntryCreatedNotificationInput = ref(null);
+const EnableDeviceCreatedNotificationInput = ref(null);
 const ntfyChannelIdInput = ref(null);
 
 const notificationSettings = usePage().props.auth.user.notification_setting;
@@ -20,6 +21,7 @@ const form = useForm({
     enable_provider_mail: notificationSettings.enable_provider_mail,
     enable_provider_ntfy: notificationSettings.enable_provider_ntfy,
     enable_log_entry_created_notification: notificationSettings.enable_log_entry_created_notification,
+    enable_device_created_notification: notificationSettings.enable_device_created_notification,
     ntfy_channel_id : notificationSettings.ntfy_channel_id,
 });
 
@@ -44,6 +46,10 @@ const updateNotificationSettings = () => {
             if (form.errors.enable_log_entry_created_notification) {
                 form.reset('enable_log_entry_created_notification');
                 EnableLogEntryCreatedNotificationInput.value.focus();
+            }            
+            if (form.errors.enable_device_created_notification) {
+                form.reset('enable_device_created_notification');
+                EnableDeviceCreatedNotificationInput.value.focus();
             }
             if (form.errors.ntfy_channel_id) {
                 form.reset('ntfy_channel_id');
@@ -150,6 +156,20 @@ const generateNtfyChannelId = () => {
                
 
                 <InputError :message="form.errors.enable_log_entry_created_notification" class="mt-2" />
+                </div>
+                <div>
+                <InputLabel for="enable_device_created_notification" value="Device creation" />
+
+                <Checkbox
+                    id="enable_device_created_notification"
+                    v-model:checked="form.enable_device_created_notification"
+                    ref="EnableDeviceCreatedNotificationInput"
+                    class="mt-1"
+                />
+
+               
+
+                <InputError :message="form.errors.enable_device_created_notification" class="mt-2" />
                 </div>
             </div>
 

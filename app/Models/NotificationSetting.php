@@ -23,6 +23,7 @@ class NotificationSetting extends Model
         'enable_provider_ntfy',
         'ntfy_channel_id',
         'enable_log_entry_created_notification',
+        'enable_device_created_notification',
     ];
 
     /**
@@ -43,6 +44,7 @@ class NotificationSetting extends Model
         'enable_provider_mail' => 'boolean',
         'enable_provider_ntfy' => 'boolean',
         'enable_log_entry_created_notification' => 'boolean',
+        'enable_device_created_notification' => 'boolean',
     ];
 
     public function user()
