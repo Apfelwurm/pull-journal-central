@@ -30,7 +30,12 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard',[
+        'BUILDNUMBER' => env('BUILDNUMBER', 'dev'),
+        'BUILDID' => env('BUILDID', 'dev'),
+        'SOURCE_COMMIT' => env('SOURCE_COMMIT', 'dev'),
+        'BUILDNODE' => env('BUILDNODE', 'dev'),
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
