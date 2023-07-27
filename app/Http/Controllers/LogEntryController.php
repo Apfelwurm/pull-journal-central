@@ -25,17 +25,17 @@ use App\Events\DeviceUpdated;
 
 class LogEntryController extends Controller
 {
-      /**
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         $filters = $request->input('filters');
-        
+
 
         return Inertia::render('LogEntries/Index', [
             'logEntries' => LogEntryResource::collection(LogEntry::filter($filters)->latest()
-            ->paginate(25)),
+                ->paginate(25)),
             'filters' => $filters,
         ]);
     }
@@ -45,22 +45,47 @@ class LogEntryController extends Controller
      * Display the specified resource.
      */
 
-     public function show(string $id)
-     {
-         $logEntry = LogEntryResource::make(
-            LogEntry::with(["device","acknowledgedfrom", "device.organisation"])->findOrFail($id)
+    public function show(string $id)
+    {
+        $logEntry = LogEntryResource::make(
+            LogEntry::with(["device", "acknowledgedfrom", "device.organisation"])->findOrFail($id)
         );
- 
-         return Inertia::render('LogEntries/Show', compact('logEntry'));
-     }
 
-    public function create (LogEntryRequest $request)
+        return Inertia::render('LogEntries/Show', compact('logEntry'));
+    }
+
+    public function create(LogEntryRequest $request)
     {
         $validatedData = $request->validated();
+
+        $validator = $request->getValidatorInstance();
         $device = Auth::user();
 
+        if ($validator->fails()) {
+            $response = [
+                'message' => "validation errors",
+                'errors' => $validator->errors()->all(),
+            ];
+            return response()->json($response, 422);
 
-        $logentry=$device->logEntries()->create($validatedData);
+        }
+
+
+        $logentry = $device->logEntries()->create($validatedData);
+
+        if (!$logentry)
+        {
+            $response = [
+                'message' => "Logentry could not be created",
+                'errors' => [
+                    'logEntry' => [
+                        "Logentry could not be created",
+                    ],
+                ],
+            ];
+            return response()->json($response, 500);
+        }
+
         event(new LogEntryCreated($logentry));
 
         $response = [
