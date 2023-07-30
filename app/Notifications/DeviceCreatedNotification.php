@@ -31,18 +31,20 @@ class DeviceCreatedNotification extends Notification
     public function via(object $notifiable): array
     {
         $array = [];
-        if ($notifiable->notificationSetting->enable_notifications &&
+        if (
+            $notifiable->notificationSetting->enable_notifications &&
             $notifiable->notificationSetting->enable_provider_ntfy &&
-            $notifiable->notificationSetting->enable_device_created_notification)
-        {
+            $notifiable->notificationSetting->enable_device_created_notification
+        ) {
             array_push($array, NtfyChannel::class);
         }
 
-        if ($notifiable->notificationSetting->enable_notifications &&
+        if (
+            $notifiable->notificationSetting->enable_notifications &&
             $notifiable->notificationSetting->enable_provider_mail &&
-            $notifiable->notificationSetting->enable_device_created_notification)
-        {
-            array_push($array ,'mail');
+            $notifiable->notificationSetting->enable_device_created_notification
+        ) {
+            array_push($array, 'mail');
         }
 
         return $array;
@@ -53,16 +55,29 @@ class DeviceCreatedNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $title = "Hello " . $notifiable->name  .", a new Device with the name " . $this->device->name ." has registered";
+        $title = "Hello "
+            . $notifiable->name
+            . ", a new Device with the name "
+            . $this->device->name
+            . " has registered";
+
         return (new MailMessage)
-                    ->line($title)
-                    ->action('View devices', config('app.url') . "/devices/");
+            ->line($title)
+            ->action('View devices', config('app.url') . "/devices/");
     }
 
     public function toNtfy(mixed $notifiable): Message
     {
-        $title = "New device registered with the name " . $this->device->name;
-        $body = "Hello " . $notifiable->name  .", a new Device with the name " . $this->device->name ." has registered. To verify the device, see: ". config('app.url') . "/devices/";
+        $title = "New device registered with the name "
+            . $this->device->name;
+
+        $body = "Hello " . $notifiable->name
+            . ", a new Device with the name "
+            . $this->device->name
+            . " has registered. To verify the device, see: "
+            . config('app.url')
+            . "/devices/";
+
         $message = new Message();
         $message->topic($notifiable->notificationSetting->ntfy_channel_id);
         $message->title($title);

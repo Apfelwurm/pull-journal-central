@@ -34,7 +34,7 @@ class LogEntryController extends Controller
 
 
         return Inertia::render('LogEntries/Index', [
-            'logEntries' => LogEntryResource::collection(LogEntry::filter($filters)->latest()
+            'logEntries' => LogEntryResource::collection(LogEntry::select(['id','source','class','device_id','acknowledged_from','acknowledged_at','created_at'])->filter($filters)->latest()
                 ->paginate(25)),
             'filters' => $filters,
         ]);
