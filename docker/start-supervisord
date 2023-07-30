@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 sleep 10
 echo "run migration as $USERNAME"
-sed -i "s|%REPLACETIMEZONE%|$PHP_Timezone|g" /etc/php8/conf.d/99-pull-journal-central.ini
+sed -i "s|%REPLACETIMEZONE%|$PHP_Timezone|g" /usr/local/etc/php/php.ini
 su $USERNAME -c "php artisan migrate --force --no-interaction"
 
 	if [ ! -f /var/www/html/storage/.initialseed ]; then
