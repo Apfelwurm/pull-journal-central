@@ -46,7 +46,7 @@ RUN set -x ; \
   adduser -u ${UUID} -D -G www-data www-data && exit 0 ; exit 1
 
 COPY docker/fpm-pool.conf /etc/php8/php-fpm.d/www.conf
-COPY --chown=${UUID}:${GUID} docker/php.ini /etc/php8/conf.d/99-pull-journal-central.ini
+COPY --chown=${UUID}:${GUID} docker/php.ini /usr/local/etc/php/php.ini
 COPY docker/start-container /usr/local/bin/start-container
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/wait-for.sh /usr/local/bin/wait-for.sh
