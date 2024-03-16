@@ -22,7 +22,7 @@ RUN npm run build
 
 # Build pull-journal-central
 
-FROM php:8.2.8-fpm-alpine
+FROM php:8.3.4-fpm-alpine
 LABEL maintainer="Apfelwurm<Alexander@volzit.de>"
 
 ENV PHP_Timezone="Europe/Berlin"
